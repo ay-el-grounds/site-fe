@@ -1,0 +1,8 @@
+/* fonts.css */
+@font-face {
+    font-family: 'Yeyey';
+    src: url('/fonts/Yeyey.otf') format('otf');
+    font-weight: normal;
+    font-style: normal;
+  }
+  
