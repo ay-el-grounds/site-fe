@@ -89,7 +89,7 @@ export default function Vroom() {
       </div>
       <div className={styles.descriptionBlock}>
         <p>
-          Before you press the accelerator, it's crucial to mentally prepare for
+          Before you press the accelerator, it&apos;s crucial to mentally prepare for
           the task ahead. By swapping <strong>$VROOM</strong>, you gain a stake
           in our community. Your participation is rewarded through contribution
           and collaboration.
@@ -384,7 +384,7 @@ export default function Vroom() {
       <div className={styles.newsletterContainer}>
         <div className={styles.newsletterCopy}>
           <h2>Shall we keep you in the loop?</h2>
-          <p>We'll only email you when we drop something.</p>
+          <p>We&apos;ll only email you when we drop something.</p>
         </div>
         <input className={styles.news} placeholder="Email Address"></input>
         <div className={styles.newsletterFooter}>
