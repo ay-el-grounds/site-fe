@@ -89,10 +89,10 @@ export default function Vroom() {
       </div>
       <div className={styles.descriptionBlock}>
         <p>
-          Before you press the accelerator, it&apos;s crucial to mentally prepare for
-          the task ahead. By swapping <strong>$VROOM</strong>, you gain a stake
-          in our community. Your participation is rewarded through contribution
-          and collaboration.
+          Before you press the accelerator, it&apos;s crucial to mentally
+          prepare for the task ahead. By swapping <strong>$VROOM</strong>, you
+          gain a stake in our community. Your participation is rewarded through
+          contribution and collaboration.
         </p>
       </div>
       <div className={styles.subHeadingBlock}>
@@ -315,7 +315,13 @@ export default function Vroom() {
       <div className={styles.communityGrid}>
         <div className={styles.uniswapContainer}>
           <div>
-            <Image src="/SVG/uniswap-logo.svg" width={40} height={40}></Image>
+            <a
+              href="https://warpcast.com/~/channel/cars"
+              target="_blank
+          "
+            >
+              <Image src="/SVG/uniswap-logo.svg" width={40} height={40}></Image>
+            </a>
           </div>
         </div>
         <div className={styles.warpContainer}>

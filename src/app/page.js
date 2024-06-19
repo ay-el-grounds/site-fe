@@ -71,7 +71,7 @@ export default function Home() {
         </div>
         <div className={styles.zoraContainer}>
           <div>
-            <a href="" target="_blank">
+            <a href="https://zora.co/@aluminum_grounds" target="_blank">
               <Image
                 src="/SVG/zora-wordmark-white.svg"
                 width={40}

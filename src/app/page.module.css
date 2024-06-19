@@ -78,6 +78,10 @@
   background: var(--rojo);
 }
 
+.headingBlock h2 {
+  font-size: 2em;
+}
+
 .subHeadingBlock {
   margin: 16px;
   width: 100%;
@@ -104,6 +108,12 @@
   overflow: hidden;
   color: var(--lemon);
   background: rgb(169,203,182);
+}
+
+.descriptionBlock h3 {
+  color: var(--onyx);
+  font-size: 0.9em;
+  text-transform: uppercase;
 }
 
 .descriptionBlock p {
@@ -159,6 +169,69 @@
   margin-right: 20px;
 }
 
+.descriptionBlock ol,
+.descriptionBlock ul {
+  padding: 0px 36px;
+  margin-left: 2em;
+  line-height: 1.3em;
+  font-size: 1.6em;
+}
+
+.descriptionBlock li {
+  margin-bottom: 1.6em;
+}
+
+.testBlock {
+  margin: 16px;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  align-items: stretch;
+  border-radius: 32px;
+  overflow: hidden;
+  color: var(--lemon);
+  background: var(--fresh);
+}
+
+.testBlock .diagrams {
+  display: flex;
+  background: white;
+  padding: 50px;
+  width: 100%;
+  justify-content: center; 
+  align-items: center;
+}
+
+.testBlock img {
+  width: 40%;
+}
+
+.testBlock .caption {
+  width: 100%;
+  color: #999;
+  padding: 0px 42px;
+  font-size: 0.8em;
+}
+
+.testBlock .paragraph {
+  padding: 36px 42px;
+  width: 100%;
+  font-size: 1.6em;
+  padding-bottom: 1em;
+}
+
+.testBlock ol,
+.testBlock ul {
+  padding: 0px 36px;
+  margin-left: 2em;
+  line-height: 1.3em;
+}
+
+.testBlock li {
+  margin-bottom: 1.6em;
+}
+
 .thirdColumn {
   width: 100%;
   display: grid;
@@ -178,6 +251,30 @@
   -webkit-box-pack: justify;
   justify-content: space-between;
   margin: 16px;
+}
+
+.genContainer {
+  color: #fffff8;
+  height: 100%;
+  width: 100%;
+  border-radius: 32px;
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  background: var(--onyx);
+
+  transition: box-shadow 0.3s ease, transform 0.3s ease; 
+
+  
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0); 
+  transform: translateZ(0); 
+}
+
+.genContainer:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
+  transform: translateY(-5px);
 }
 
 .twitterContainer {
@@ -495,6 +592,7 @@ transform: translateY(-5px); /* Translate 5px up on hover */
   .descriptionBlock {
     margin: 16px 0px 0px;
   }
+
 
   .communityGrid {
     display: grid;
