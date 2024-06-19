@@ -1,6 +1,12 @@
 import Image from "next/image";
 import styles from "../../page.module.css";
 
+export const metadata = {
+  title: "$VROOM contributions",
+  description:
+    "$VROOM is a memecoin launched by Aluminum Grounds that demonstrates... This is not financial advice, always do your own research.",
+};
+
 export default function VroomContribution() {
   return (
     <main className={styles.main}>
