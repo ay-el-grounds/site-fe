@@ -7,7 +7,7 @@ export default function HoverBuy() {
       <a href="" target="_blank">
         <p>Buy</p>
         <VROOM width={'100%'} />
-      </a>
+        <p>{" { soon } "}</p></a>
     </div>
   );
 }
