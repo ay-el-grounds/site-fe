@@ -1,5 +1,9 @@
 import Image from "next/image";
 import styles from "../../page.module.css";
+import EmailSub from "@/components/EmailSub";
+import HoverBuy from "@/components/HoverBuy";
+import VROOM from "@/components/VROOM";
+import FinePrint from "@/components/FinePrint";
 
 export const metadata = {
   title: "$VROOM contributions",
@@ -11,62 +15,73 @@ export default function VroomContribution() {
   return (
     <main className={styles.main}>
       <nav className={styles.header}>
-        <div className={styles.logo}>
-          <h1>$VROOM</h1>
+        <div className={styles.logoVROOM}>
+          <VROOM />
         </div>
+        <a
+          href="/
+          "
+        >
+          <div className={styles.homeButton}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="100%"
+              height="100%"
+              viewBox="0 0 24 24"
+            >
+              <path
+                fill="currentColor"
+                d="M19 20h-2v-9H7v9H5V9l7-4l7 4v11M8 12h8v2H8v-2m0 3h8v2H8v-2m8 3v2H8v-2h8Z"
+              />
+            </svg>
+          </div>
+        </a>
       </nav>
+      <HoverBuy />
       <div className={styles.headingBlock}>
         <h2>Contribute</h2>
       </div>
       <div className={styles.descriptionBlock}>
         <p>
-          This guide is your manual, outlining how to live and breathe the{" "}
-          <strong>$VROOM</strong> ethos, with precision and dedication. Issued
-          under the oversight of the Aluminum Grounds (AG), this document is
-          your blueprint for maintaining the high standards that define{" "}
-          <strong>$VROOM</strong>.
+          This guide outlines how to live and breathe{" "}
+          <span className={styles.vroom}>$VROOM</span>.
         </p>
       </div>
       <div className={styles.communityGrid}>
         <div className={styles.genContainer}>
           <div>
-            <a href="" target="_blank">
-              {`{ \n
-              section: 'Emblem',\n
-              timeline: soon\n
-              }`}
+            <a href="">
+            Emblem<br>
+              </br>(soon)
             </a>
           </div>
         </div>
         <div className={styles.genContainer}>
           <div>
-            <a href="" target="_blank">
-              {`{ \n
-              section: 'Typography',\n
-              timeline: soon\n
-              }`}
+            <a href="">
+            Imagery<br>
+              </br>(soon)
             </a>
           </div>
         </div>
         <div className={styles.genContainer}>
           <div>
-            <a href="" target="_blank">
-              {`{ \n
-              section: 'Typography',\n
-              timeline: soon\n
-              }`}
+            <a href="">
+              Typography<br>
+              </br>(soon)
             </a>
           </div>
         </div>
       </div>
       <div className={styles.headingBlock}>
-        <h2>Tenets</h2>
+        <h2>$VROOM Tenets</h2>
       </div>
       <div className={styles.descriptionBlock}>
         <h3>Be Authentic</h3>
         <p>
-          $VROOM thrives on genuine passion for automotive excellence. Let this
-          authenticity fuel your contributions.
+          <span className={styles.vroom}>$VROOM</span> thrives on genuine
+          passion for automotive excellence. Let this authenticity fuel your
+          contributions.
         </p>
 
         <h3>Stick to Protocols</h3>
@@ -76,24 +91,26 @@ export default function VroomContribution() {
         </p>
         <h3>Innovate Always</h3>
         <p>
-          $VROOM is about pushing the limits. Burn rubber and reflect this in
-          every aspect of your contribution.
+          <span className={styles.vroom}>$VROOM</span> is about pushing the
+          limits. Burn rubber and reflect this in every aspect of your
+          contribution.
         </p>
         <h3>Detail Obsession</h3>
         <p>
           Precision wins races. From visuals to messaging, ensure everything
-          aligns with the $VROOM brand.
+          aligns with the <span className={styles.vroom}>$VROOM</span> brand.
         </p>
         <h3>Collaborate Hard</h3>
         <p>
-          Racing is a team sport. Work with others who share the $VROOM vision
-          to draft ahead and achieve more together.
+          Racing is a team sport. Work with others who share the{" "}
+          <span className={styles.vroom}>$VROOM</span> vision to draft ahead and
+          achieve more together.
         </p>
       </div>
       <div className={styles.headingBlock}>
         <h2>Joining the Inner Donut</h2>
       </div>
-      <div className={styles.testBlock}>
+      <div className={styles.mediaBlock}>
         <div className={styles.diagrams}>
           <img src="/race-track.png"></img>
         </div>
@@ -132,28 +149,26 @@ export default function VroomContribution() {
       <div className={styles.headingBlock}>
         <h2>$VROOM on the Assembly Line</h2>
       </div>
-      <div className={styles.subHeadingBlock}>
-        <h3>About</h3>
-      </div>
       <div className={styles.descriptionBlock}>
         <p>
-          As the world embraces electric vehicles, $VROOM captures and
-          immortalizes the beautiful sounds and spirited memories of combustion
-          engines in a digital medium.
+          As the world embraces electric vehicles, <span className={styles.vroom}>$VROOM</span> captures and
+          immortalizes the beautiful sounds in a deeply abstracted way on a
+          digital medium.
         </p>
         <p>
-          $VROOM dropped in June (Pride month), a month packed with automotive
-          history. $VROOM celebrates milestones like the first auto race, the
-          premiere of The Fast and the Furious franchise, the release of{" "}
+        <span className={styles.vroom}>$VROOM</span> dropped on June 25th. In a month packed with automotive history
+          (and also PRIDE). <span className={styles.vroom}>$VROOM</span> celebrates milestones like the first auto
+          race, the premiere of The Fast and the Furious franchise, the release
+          of{" "}
           <a href="https://www.imdb.com/title/tt0187078/" target="_blank">
             Gone in Sixty Seconds
           </a>
           , and{" "}
-          <a href="https://www.imdb.com/title/tt0187078/" target="_blank"></a>
-          Cars (the Pixar film) — turns out, cars are gay.
+          <a href="https://www.imdb.com/title/tt0187078/" target="_blank">
+          Cars</a> (the Pixar film) — so as it turns out, cars are gay.
         </p>
         <p>
-          In our universe, $VROOM transcends mere tokenization—it’s a cultural
+          In our universe, <span className={styles.vroom}>$VROOM</span> transcends mere tokenization—it’s a cultural
           statement. It playfully critiques traditional industries while
           fostering a community-driven approach to redefining automotive
           engagement in the digital age.
@@ -185,7 +200,7 @@ export default function VroomContribution() {
         <div className={styles.basescanContainer}>
           <div>
             <a
-              href="https://basescan.org/"
+              href="https://basescan.org/address/0x1E6bA8BC42Bbd8C68Ca7E891bAc191F0e07B1d6F"
               target="_blank
           "
             >
@@ -231,16 +246,8 @@ export default function VroomContribution() {
           </div>
         </div> */}
       </div>
-      <div className={styles.newsletterContainer}>
-        <div className={styles.newsletterCopy}>
-          <h2>Shall we keep you in the loop?</h2>
-          <p>We&apos;ll only email you when we drop something.</p>
-        </div>
-        <input className={styles.news} placeholder="Email Address"></input>
-        <div className={styles.newsletterFooter}>
-          <button className={styles.subButton}>Subscribe</button>
-        </div>
-      </div>
+      <EmailSub />
+      <FinePrint />
     </main>
   );
 }

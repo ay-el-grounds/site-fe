@@ -1,14 +1,19 @@
 import Image from "next/image";
 import styles from "./page.module.css";
 import Link from "next/link";
+import AG from "@/components/AG";
+import EmailSub from "@/components/EmailSub";
 
 export default function Home() {
   return (
     <>
       <main className={styles.main}>
         <nav className={styles.header}>
-          <div className={styles.logo}>
-            <h1>Aluminum Grounds</h1>
+          <div className={styles.logoAG}>
+            <AG fill={'red'}/>
+            
+
+            {/* <img src="/SVG/lettermark.svg" alt="Aluminum Grounds"></img> */}
           </div>
           {/* <div className={styles.filterContainer}>
           <div className={styles.filterOption}>All</div>
@@ -16,7 +21,7 @@ export default function Home() {
           <div className={styles.filterOption}>Drops</div>
         </div> */}
           <div className={styles.collabContainer}>
-            <a href="mailto:aluminumgrounds@gmail.com">Collaboration</a>
+            <a href="mailto:aluminumgrounds@gmail.com">Talk to us</a>
           </div>
         </nav>
         <div className={styles.descriptionBlock}>
@@ -98,16 +103,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div className={styles.newsletterContainer}>
-          <div className={styles.newsletterCopy}>
-            <h2>Shall we keep you in the loop?</h2>
-            <p>We&apos;ll only email you when we drop something.</p>
-          </div>
-          <input className={styles.news} placeholder="Email Address"></input>
-          <div className={styles.newsletterFooter}>
-            <button className={styles.subButton}>Subscribe</button>
-          </div>
-        </div>
+        <EmailSub />
       </main>
     </>
   );

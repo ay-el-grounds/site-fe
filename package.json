@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@svgr/webpack": "^8.1.0",
     "chrome-aws-lambda": "^10.1.0",
     "google-charts": "^2.0.0",
     "loader": "^2.1.1",
