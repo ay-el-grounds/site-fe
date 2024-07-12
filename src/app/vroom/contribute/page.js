@@ -38,13 +38,17 @@ export default function VroomContribution() {
         </a>
       </nav>
       <HoverBuy />
-      <div className={styles.headingBlock}>
+      <div className={styles.mediaBlock}>
+        <img src="/tokyo-highway-roll.gif"></img>
+      </div>
+
+      <div className={styles.descriptionBlock}>
+      <div className={styles.heading}>
         <h2>Contribute</h2>
       </div>
-      <div className={styles.descriptionBlock}>
         <p>
           This guide outlines how to live and breathe{" "}
-          <span className={styles.vroom}>$VROOM</span>.
+          <span className={styles.vroomWord}>$VROOM</span>.
         </p>
       </div>
       <div className={styles.communityGrid}>
@@ -70,17 +74,17 @@ export default function VroomContribution() {
           </div>
         </div>
       </div>
-      <div className={styles.headingBlock}>
-        <h2>$VROOM Tenets</h2>
-      </div>
+
       <div className={styles.descriptionBlock}>
+      <div className={styles.heading}>
+        <h2>Branding Tenets</h2>
+      </div>
         <h3>Be Authentic</h3>
         <p>
-          <span className={styles.vroom}>$VROOM</span> thrives on genuine
+          <span className={styles.vroomWord}>$VROOM</span> thrives on genuine
           passion for automotive excellence. Let this authenticity fuel your
           contributions.
         </p>
-
         <h3>Stick to Protocols</h3>
         <p>
           Think of these standards as your race regulations. Adhere to them
@@ -88,26 +92,26 @@ export default function VroomContribution() {
         </p>
         <h3>Innovate Always</h3>
         <p>
-          <span className={styles.vroom}>$VROOM</span> is about pushing the
+          <span className={styles.vroomWord}>$VROOM</span> is about pushing the
           limits. Burn rubber and reflect this in every aspect of your
           contribution.
         </p>
         <h3>Detail Obsession</h3>
         <p>
           Precision wins races. From visuals to messaging, ensure everything
-          aligns with the <span className={styles.vroom}>$VROOM</span> brand.
+          aligns with the <span className={styles.vroomWord}>$VROOM</span> brand.
         </p>
         <h3>Collaborate Hard</h3>
         <p>
           Racing is a team sport. Work with others who share the{" "}
-          <span className={styles.vroom}>$VROOM</span> vision to draft ahead and
+          <span className={styles.vroomWord}>$VROOM</span> vision to draft ahead and
           achieve more together.
         </p>
       </div>
-      <div className={styles.headingBlock}>
+      <div className={styles.mediaBlock}>
+      <div className={styles.heading}>
         <h2>Joining the Inner Donut</h2>
       </div>
-      <div className={styles.mediaBlock}>
         <div className={styles.diagrams}>
           <img src="/race-track.png"></img>
         </div>
@@ -117,13 +121,15 @@ export default function VroomContribution() {
         <div className={styles.paragraph}>
           <ol>
             <li>
-              Utilize <span className={styles.vroom}>$VROOM</span> brand assets to contribute to the meme economy
-              while adhereing to our guidelines.
+              Utilize <span className={styles.vroomWord}>$VROOM</span> brand assets
+              to contribute to the meme economy while adhereing to our
+              guidelines.
             </li>
             <li>Share your creations through our Race Bib Form.</li>
             <li>
               Selected works will be featured across our social channels,
-              amplifying your reach within the <span className={styles.vroom}>$VROOM</span> community. If your
+              amplifying your reach within the{" "}
+              <span className={styles.vroomWord}>$VROOM</span> community. If your
               creation is selected for minting, you&apos;ll be invited to ...
             </li>
             <li>
@@ -143,19 +149,19 @@ export default function VroomContribution() {
           </p>
         </div>
       </div>
-      <div className={styles.headingBlock}>
+      <div className={styles.descriptionBlock}>
+      <div className={styles.heading}>
         <h2>$VROOM on the Assembly Line</h2>
       </div>
-      <div className={styles.descriptionBlock}>
         <p>
           As the world embraces electric vehicles,{" "}
-          <span className={styles.vroom}>$VROOM</span> captures and immortalizes
+          <span className={styles.vroomWord}>$VROOM</span> captures and immortalizes
           the beautiful sounds in a deeply abstracted way on a digital medium.
         </p>
         <p>
-          <span className={styles.vroom}>$VROOM</span> dropped on June 25th. In
+          <span className={styles.vroomWord}>$VROOM</span> dropped on June 25th. In
           a month packed with automotive history (and also PRIDE).{" "}
-          <span className={styles.vroom}>$VROOM</span> celebrates milestones
+          <span className={styles.vroomWord}>$VROOM</span> celebrates milestones
           like the first auto race, the premiere of The Fast and the Furious
           franchise, the release of{" "}
           <a href="https://www.imdb.com/title/tt0187078/" target="_blank">
@@ -168,14 +174,14 @@ export default function VroomContribution() {
           (the Pixar film) — so as it turns out, cars are gay.
         </p>
         <p>
-          In our universe, <span className={styles.vroom}>$VROOM</span>{" "}
+          In our universe, <span className={styles.vroomWord}>$VROOM</span>{" "}
           transcends mere tokenization—it’s a cultural statement. It playfully
           critiques traditional industries while fostering a community-driven
           approach to redefining gasoline-powered love in the digital age.
         </p>
       </div>
       <div className={styles.communityGrid}>
-        <div className={styles.uniswapContainer}>
+        <div className={`${styles.communityGridItem} ${styles.uniswap}`}>
           <div>
             <a
               href=""
@@ -186,38 +192,38 @@ export default function VroomContribution() {
             </a>
           </div>
         </div>
-        <div className={styles.warpContainer}>
-            <a
-              href="https://warpcast.com/~/channel/cars"
-              target="_blank
+        <div className={`${styles.communityGridItem} ${styles.warpcast}`}>
+          <a
+            href="https://warpcast.com/~/channel/cars"
+            target="_blank
           "
-            >
-              <div className={styles.carsChannel}>
+          >
+            <div className={styles.carsChannel}>
               <svg
-                  width="35px"
-                  height="35px"
-                  viewBox="0 0 1000 1000"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M257.778 155.556H742.222V844.445H671.111V528.889H670.414C662.554 441.677 589.258 373.333 500 373.333C410.742 373.333 337.446 441.677 329.586 528.889H328.889V844.445H257.778V155.556Z"
-                    fill="white"
-                  />
-                  <path
-                    d="M128.889 253.333L157.778 351.111H182.222V746.667C169.949 746.667 160 756.616 160 768.889V795.556H155.556C143.283 795.556 133.333 805.505 133.333 817.778V844.445H382.222V817.778C382.222 805.505 372.273 795.556 360 795.556H355.556V768.889C355.556 756.616 345.606 746.667 333.333 746.667H306.667V253.333H128.889Z"
-                    fill="white"
-                  />
-                  <path
-                    d="M675.556 746.667C663.282 746.667 653.333 756.616 653.333 768.889V795.556H648.889C636.616 795.556 626.667 805.505 626.667 817.778V844.445H875.556V817.778C875.556 805.505 865.606 795.556 853.333 795.556H848.889V768.889C848.889 756.616 838.94 746.667 826.667 746.667V351.111H851.111L880 253.333H702.222V746.667H675.556Z"
-                    fill="white"
-                  />
-                </svg>
-                {" "} /cars
-              </div>
-            </a>
+                width="35px"
+                height="35px"
+                viewBox="0 0 1000 1000"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M257.778 155.556H742.222V844.445H671.111V528.889H670.414C662.554 441.677 589.258 373.333 500 373.333C410.742 373.333 337.446 441.677 329.586 528.889H328.889V844.445H257.778V155.556Z"
+                  fill="white"
+                />
+                <path
+                  d="M128.889 253.333L157.778 351.111H182.222V746.667C169.949 746.667 160 756.616 160 768.889V795.556H155.556C143.283 795.556 133.333 805.505 133.333 817.778V844.445H382.222V817.778C382.222 805.505 372.273 795.556 360 795.556H355.556V768.889C355.556 756.616 345.606 746.667 333.333 746.667H306.667V253.333H128.889Z"
+                  fill="white"
+                />
+                <path
+                  d="M675.556 746.667C663.282 746.667 653.333 756.616 653.333 768.889V795.556H648.889C636.616 795.556 626.667 805.505 626.667 817.778V844.445H875.556V817.778C875.556 805.505 865.606 795.556 853.333 795.556H848.889V768.889C848.889 756.616 838.94 746.667 826.667 746.667V351.111H851.111L880 253.333H702.222V746.667H675.556Z"
+                  fill="white"
+                />
+              </svg>{" "}
+              /cars
+            </div>
+          </a>
         </div>
-        <div className={styles.basescanContainer}>
+        <div className={`${styles.communityGridItem} ${styles.basescan}`}>
           <div>
             <a
               href="https://basescan.org/address/0x1E6bA8BC42Bbd8C68Ca7E891bAc191F0e07B1d6F"
@@ -232,7 +238,7 @@ export default function VroomContribution() {
             </a>
           </div>
         </div>
-        <div className={styles.zoraContainer}>
+        <div className={`${styles.communityGridItem} ${styles.zora}`}>
           <div>
             <a
               href="https://zora.co"
@@ -247,9 +253,12 @@ export default function VroomContribution() {
             </a>
           </div>
         </div>
-        <div className={styles.arenaContainer}>
+        <div className={`${styles.communityGridItem} ${styles.arena}`}>
           <div>
-            <a href="" target="_blank">
+            <a
+              href="https://www.are.na/brian-felix/vroom-e5x4pc22x14"
+              target="_blank"
+            >
               <Image src="/SVG/arena-logo.svg" width={80} height={25}></Image>
             </a>
           </div>

@@ -44,7 +44,7 @@ export default function Home() {
           </p>
         </div>
         <div className={styles.communityGrid}>
-          <div className={styles.twitterContainer}>
+          <div className={`${styles.communityGridItem} ${styles.twitter}`}>
             <a href="https://x.com/aluminumgrounds" target="_blank">
               <div>
                 <svg
@@ -61,7 +61,7 @@ export default function Home() {
               </div>
             </a>
           </div>
-          <div className={styles.instaContainer}>
+          <div className={`${styles.communityGridItem} ${styles.instagram}`}>
             <a
               href="https://www.instagram.com/aluminumgrounds/"
               target="_blank"
@@ -81,7 +81,7 @@ export default function Home() {
               </div>
             </a>
           </div>
-          <div className={styles.warpContainer}>
+          <div className={`${styles.communityGridItem} ${styles.warpcast}`}>
             <a
               href="https://warpcast.com/~/channel/cars"
               target="_blank
@@ -112,7 +112,7 @@ export default function Home() {
               </div>
             </a>
           </div>
-          <div className={styles.zoraContainer}>
+          <div className={`${styles.communityGridItem} ${styles.zora}`}>
             <div>
               <a href="https://zora.co/@aluminum_grounds" target="_blank">
                 <Image
@@ -123,7 +123,7 @@ export default function Home() {
               </a>
             </div>
           </div>
-          <div className={styles.vroomContainer}>
+          <div className={`${styles.communityGridItem} ${styles.vroom}`}>
             <div>
               <Link href="/vroom">
                 <Image

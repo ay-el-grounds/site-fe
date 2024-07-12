@@ -29,7 +29,7 @@
   border-radius: 30px;
 }
 
-.vroom {
+.vroomWord {
   font-weight: 600;
   font-style: italic;
 }
@@ -95,6 +95,27 @@
   transform: translate(-2.1rem, 0px);
 }
 
+.twoImages {
+  margin: 16px;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  align-items: stretch;
+  border-radius: 32px;
+  overflow: hidden;
+}
+
+.imageItem img {
+  width: 100%;
+  border-radius: 32px;
+}
+
+.twoColumn {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
 .filterContainer {
   position: relative;
   background: rgba(0, 0, 0, 0.04);
@@ -138,27 +159,90 @@
   cursor: pointer;
 }
 
-.headingBlock {
+.radio {
+  position: fixed;
+  right: 0;
+  top: 50%;
+  width: 25vw;
+  height: 200px;
   margin: 16px;
+  border-radius: 32px;
+  overflow: hidden;
+  z-index: 30;
+
+  background-color: var(--lemon);
+  transition: overflow 0.3s ease;
+}
+
+.radio:hover {
+  overflow-y: auto;
+}
+
+.radio audio {
+  position: sticky;
+  top: 0;
   width: 100%;
+  border-radius: 0;
+}
+
+li.jukebox {
+  border-bottom: 0.5px dotted var(--white);
+  list-style: none;
+}
+
+.jukeboxSongs {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.5rem;
+  gap: 1rem;
+
+  background-color: var(--lemon);
+}
+
+button.jukeboxSongs {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  border: none;
+
+  cursor: pointer;
+}
+
+.indSong {
+  display: flex;
+  align-items: center;
+}
+
+.indSong img {
+  width: 5%;
+  margin-right: 10px;
+  border-radius: 20%;
+}
+
+.heading {
+  margin: -36px -42px 16px;
+  width: calc(100% + 42px + 42px);
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   -webkit-box-pack: justify;
   justify-content: space-between;
   padding: 36px 42px;
-  border-radius: 32px;
+  border-radius: 32px 32px 0px 0px;
   overflow: hidden;
-  color: var(--lemon);
+  color: var(--white);
   background: var(--rojo);
 }
 
-.headingBlock h2 {
+.heading h2 {
   font-size: 2em;
   font-weight: 300;
 }
 
-.headingBlock h4 {
+.heading h4 {
   margin-top: 2px;
   font-weight: 100;
 }
@@ -303,19 +387,26 @@
   overflow: hidden;
   color: var(--onyx);
   background: var(--fresh);
+  padding: 36px 42px;
 }
 
 .mediaBlock .diagrams {
   display: flex;
   background: white;
   padding: 50px;
-  width: 100%;
+  margin: -36px -42px 0px;
+  width: calc(100% + 42px + 42px);
   justify-content: center; 
   align-items: center;
 }
 
-.mediaBlock img {
+.mediaBlock .diagrams img {
   width: 40%;
+}
+
+.mediaBlock img {
+  width: calc(100% + 42px + 42px);
+  margin: -36px -42px;
 }
 
 .mediaBlock .caption {
@@ -336,11 +427,10 @@
 .mediaBlock ol,
 .mediaBlock ul {
   padding: 0px 36px;
-
+  list-style-type: decimal;
 }
 
 .mediaBlock li {
-  padding: 10px;
   line-height: 1.3em;
   margin-bottom: 1.4em;
 }
@@ -352,8 +442,7 @@
   gap: 16px;
   padding-top: 0px;
   padding-bottom: 0px;
-  margin-top: 0px;
-  margin-bottom: 0px;
+  margin: -16px 0;
 }
 
 .genContainer {
@@ -407,146 +496,38 @@
   transform: translateZ(0); 
 }
 
-.twitterContainer {
-  height: 100%;
-  width: 100%;
-  border-radius: 32px;
-  display: flex;
-  -webkit-box-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  justify-content: center;
+.communityGridItem:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transform: translateY(-5px);
+}
+
+.twitter {
   background: rgb(152, 208, 255);
-
-  transition: box-shadow 0.3s ease, transform 0.3s ease; 
-
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0); 
-  transform: translateZ(0);
 }
 
-.twitterContainer:hover {
-box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-transform: translateY(-5px);
-}
-
-.instaContainer {
-  height: 100%;
-  width: 100%;
-  border-radius: 32px;
-  display: flex;
-  -webkit-box-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  justify-content: center;
+.instagram {
   background: rgb(193,53,132);
-
-  transition: box-shadow 0.3s ease, transform 0.3s ease; 
-
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0); 
-  transform: translateZ(0);
 }
 
-.instaContainer:hover {
-box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-transform: translateY(-5px);
-}
-
-.warpContainer {
-  height: 100%;
-  width: 100%;
-  border-radius: 32px;
-  display: flex;
-  -webkit-box-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  justify-content: center;
-  background: rgb(123,101,193);
-
+.warpcast {
   color: var(--white);
-  font-weight: 400;
-
-  transition: box-shadow 0.3s ease, transform 0.3s ease; 
-  
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0); 
-  transform: translateZ(0); 
-}
-
-.warpContainer:hover {
-box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
-transform: translateY(-5px); 
+  background: rgb(123,101,193);
 }
 
 .carsChannel svg {
   margin-bottom: -10px;
 }
 
-.zoraContainer {
-  height: 100%;
-  width: 100%;
-  border-radius: 32px;
-  display: flex;
-  -webkit-box-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  justify-content: center;
+.zora {
   background: rgb(67,121,240);
-
-  transition: box-shadow 0.3s ease, transform 0.3s ease; 
-
-  
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0); 
-  transform: translateZ(0); 
 }
 
-.zoraContainer:hover {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
-  transform: translateY(-5px);
-}
-
-.arenaContainer {
-  height: 100%;
-  width: 100%;
-  border-radius: 32px;
-  display: flex;
-  -webkit-box-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  justify-content: center;
+.arena {
   background: white;
-
-  transition: box-shadow 0.3s ease, transform 0.3s ease; 
-
-  
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0); 
-  transform: translateZ(0); 
 }
 
-.arenaContainer:hover {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
-  transform: translateY(-5px);
-}
-
-.vroomContainer {
-  height: 100%;
-  width: 100%;
-  border-radius: 32px;
-  display: flex;
-  -webkit-box-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  justify-content: center;
+.vroom {
   background: var(--rojo);
-
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
-
-  
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0); 
-  transform: translateZ(0); 
-}
-
-.vroomContainer:hover {
-box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
-transform: translateY(-5px); 
 }
 
 .vroomContainer p {
@@ -554,59 +535,23 @@ transform: translateY(-5px);
   font-weight: bolder;
 }
 
-.uniswapContainer {
-  height: 100%;
-  width: 100%;
-  border-radius: 32px;
-  display: flex;
-  -webkit-box-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  justify-content: center;
+.uniswap {
   background: rgb(255,0,122);
-
-  transition: box-shadow 0.3s ease, transform 0.3s ease; 
-
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0); 
-  transform: translateZ(0);
 }
 
-.uniswapContainer:hover {
-box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-transform: translateY(-5px);
-}
-
-.basescanContainer {
-  height: 100%;
-  width: 100%;
-  border-radius: 32px;
-  display: flex;
-  -webkit-box-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  justify-content: center;
+.basescan {
   background: rgb(10,11,14);
-
-  transition: box-shadow 0.3s ease, transform 0.3s ease; 
-
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0); 
-  transform: translateZ(0);
-}
-
-.basescanContainer:hover {
-box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-transform: translateY(-5px);
 }
 
 .newsletterContainer {
-  position: relative;
   margin: 16px;
+  padding: 45px 40px;
   height: 100%;
   width: 100%;
-  padding: 40px 44px;
   border-radius: 32px;
   background: rgb(255, 255, 255);
   box-shadow: transparent 0px 0px 0px 2px inset;
+  overflow: hidden;
 }
 
 .newsletterContainer h2 {
@@ -631,7 +576,7 @@ transform: translateY(-5px);
   width: 100%;
   background: transparent;
   border-bottom: 2px solid rgb(240, 242, 248);
-  padding: 16px 0px;
+  padding: 16px 10px;
   font-size: 16px;
   letter-spacing: 0.25px;
   font-weight: 400;
@@ -707,14 +652,19 @@ transform: translateY(-5px);
 
   .logoAG {
     width: calc(100vw - 16px);
+    padding: 20px;
   }
 
   .hoverButton {
     max-width: 70%;
   }
 
-  .collabContainer {
-    margin-top: 16px;
+  .radio {
+    width: 75vw;
+  }
+
+  .thirdColumn {
+    display: contents;
   }
 
   .genContainer {
@@ -744,18 +694,14 @@ transform: translateY(-5px);
     margin: 16px 0px;
   }
   
-  .mediaBlock img {
-    width: 95%;
-  }
-  
   .mediaBlock .paragraph {
-    padding: 20px 20px;
+    padding: 20px 0px;
     font-size: 1.3em;
+    margin-bottom: 1.5em;
   }
   
   .mediaBlock ol,
   .mediaBlock ul {
-    padding: 0px 0px;
     line-height: 1.3em;
   }
 

@@ -7,6 +7,7 @@ import EmailSub from "@/components/EmailSub";
 import GoogleChart from "../../components/GoogleCharts";
 import HoverCollab from "@/components/HoverCollab";
 import FinePrint from "@/components/FinePrint";
+import Radio from "@/components/Radio";
 
 export const metadata = {
   title: "$VROOM tokenomics",
@@ -82,35 +83,45 @@ export default function Vroom() {
           </a>
         </nav>
         <HoverBuy />
-        <div className={styles.headingBlock}>
-          <h2>Introduction</h2>
+        <Radio />
+        <div className={styles.twoImages}>
+          <div className={styles.imageItem}>
+            <img src="/taemwork-01.png"></img>
+          </div>
+          <div className={styles.imageItem}>
+            <img src="/teamwork-02.png"></img>
+          </div>
         </div>
         <div className={styles.descriptionBlock}>
+          <div className={styles.heading}>
+            <h2>Introduction</h2>
+          </div>
           <p>
-            Welcome to the official <span className={styles.vroom}>$VROOM</span>{" "}
-            tokenomics guide, brought to you by Aluminum Grounds. This manual
-            will help you understand the inner workings of your $VROOM token and
-            how it powers our community.
+            Welcome to the official{" "}
+            <span className={styles.vroomWord}>$VROOM</span> tokenomics guide,
+            brought to you by Aluminum Grounds. This manual will help you
+            understand the inner workings of your $VROOM token and how it powers
+            our community.
           </p>
         </div>
-        <div className={styles.headingBlock}>
-          <h2> Tokenomics</h2>
-          <h4>(Operating Instructions for $VROOM)</h4>
-        </div>
         <div className={styles.descriptionBlock}>
+          <div className={styles.heading}>
+            <h2> Tokenomics</h2>
+            <h4>(Operating Instructions for $VROOM)</h4>
+          </div>
           <h4>Overview</h4>
           <p>
-            <span className={styles.vroom}>$VROOM</span> is a community-owned
-            artwork initiated by Aluminum Grounds. Upon launch, we minted ~472.9
-            billion tokens ($VROOM), with over 40% available for open enrollment
-            to all automotive enthusiasts.
+            <span className={styles.vroomWord}>$VROOM</span> is a
+            community-owned artwork initiated by Aluminum Grounds. Upon launch,
+            we minted ~472.9 billion tokens ($VROOM), with over 40% available
+            for open enrollment to all automotive enthusiasts.
           </p>
           <p>
-            Launched in June of 2024 on Base Network with an airdrop shortly
+            Launched in June of 2024 on Base Network with an Airdrop shortly
             after.
           </p>
         </div>
-        {/* <div className={styles.thirdColumn}>
+        <div className={styles.thirdColumn}>
           <div className={styles.descriptionBlock}>
             <p>
               Our token allocation strategy builds off of the backs of the
@@ -159,13 +170,38 @@ export default function Vroom() {
             />
             <div className={styles.note}>
               *15% of Supply is in circulation after Airdrop 1 through the
-              initial LP, rewards, & the airdrop
+              initial LP, rewards, & the Airdrop
             </div>
           </div>
         </div>
         <div className={styles.descriptionBlock}>
-          <h2>Airdrop</h2>
-          <p>0% of allocated funds have been distributed</p>
+          <div className={styles.heading}>
+            <h2>Airdrop</h2>
+          </div>
+          <p>0% of allocated funds have been distributed.</p>
+          <p>
+            The strategy here is to encourage unification of fans of &apos;things&apos;
+            with engines. This includes members of the <a href="https://warpcast.com/~/channel/f1" target="_blank">/f1</a> and <a href="https://warpcast.com/~/channel/velocityvibes">/velocity vibes</a>
+            {" "}communities on Farcaster. It also includes collectors of car-related
+            collections like "
+            <a
+              href="https://opensea.io/collection/rustyrollers"
+              target="_blank"
+            >
+              Rusty Rollers
+            </a>
+            " by baggy.industries, "
+            <a href="https://jaypegsautomart.com/" target="_blank">
+              Jay Pegs Auto Mart
+            </a>
+            ," and{" "}"
+            <a
+              href="https://opensea.io/collection/drive-dave-krugman"
+              target="_blank"
+            >
+              DRIVE //</a>" by Dave Krugman
+            
+          </p>
           <div>
             <table>
               <thead>
@@ -177,40 +213,32 @@ export default function Vroom() {
               </thead>
               <tbody>
                 <tr>
-                  <td>Open Enrollment</td>
-                  <td>Circulating</td>
-                  <td>40%</td>
+                  <td>Open Enrollment Airdrop (Airdrop 1)</td>
+                  <td>Planned Airdrop</td>
+                  <td>15%</td>
                 </tr>
                 <tr>
-                  <td>Liquidity Pool, Mining, and Airdrops</td>
-                  <td>Circulating</td>
-                  <td>25%</td>
-                </tr>
-                <tr>
-                  <td>Team and Investors (Pit Crew)</td>
-                  <td>Circulating</td>
+                  <td>Pit Crew Airdrop (Airdrop 2)</td>
+                  <td>Coming soon</td>
                   <td>20%</td>
                 </tr>
                 <tr>
-                  <td>Ecosystem Support</td>
-                  <td>Circulating</td>
-                  <td>10%</td>
-                </tr>
-                <tr>
-                  <td>Incentivized Rewards (LP, IRL Activations, etc.)</td>
-                  <td>Circulating</td>
-                  <td>5%</td>
+                  <td>"Creative Name" (Airdrop 3)</td>
+                  <td>Coming soon</td>
+                  <td>25%</td>
                 </tr>
               </tbody>
             </table>
             <div className={styles.note}>
               *25% of Supply is in circulation after Airdrop 1 through the
-              initial LP, rewards, & the airdrop
+              initial LP, rewards, & the Airdrop
             </div>
           </div>
         </div>
         <div className={styles.descriptionBlock}>
-          <h2>Liquidity Mining</h2>
+        <div className={styles.heading}>
+        <h2>Liquidity & Rewards</h2>
+          </div>
           <p>0% of allocated funds have been distributed</p>
           <div>
             <table>
@@ -223,20 +251,20 @@ export default function Vroom() {
               </thead>
               <tbody>
                 <tr>
-                  <td>Liquidity minining (S01)</td>
+                  <td>Starting Grid (Initial Pool)</td>
                   <td>Coming soon</td>
-                  <td>40%</td>
+                  <td>15%</td>
                 </tr>
                 <tr>
-                  <td>Liquidity minining (S02)</td>
+                  <td>Lap Rewards (Reward Pool)</td>
                   <td>Coming soon</td>
-                  <td>25%</td>
+                  <td>9.5%</td>
                 </tr>
               </tbody>
             </table>
           </div>
         </div>
-        <div className={styles.descriptionBlock}>
+        {/* <div className={styles.descriptionBlock}>
           <h2>Liquidity Pool</h2>
           <p>0% of allocated funds have been distributed</p>
           <div>
@@ -299,14 +327,14 @@ export default function Vroom() {
             </table>
             <div className={styles.note}>
               *25% of Supply is in circulation after Airdrop 1 through the
-              initial LP, rewards, & the airdrop
+              initial LP, rewards, & the Airdrop
             </div>
           </div>
         </div> */}
-        <div className={styles.headingBlock}>
-          <h2>Maintenance and Support</h2>
-        </div>
         <div className={styles.descriptionBlock}>
+          <div className={styles.heading}>
+            <h2>Maintenance and Support</h2>
+          </div>
           <p>
             Keep your $VROOM token in peak condition by staying engaged with our
             community.{" "}
@@ -317,7 +345,7 @@ export default function Vroom() {
           </p>
         </div>
         <div className={styles.communityGrid}>
-          <div className={styles.uniswapContainer}>
+          <div className={`${styles.communityGridItem} ${styles.uniswap}`}>
             <div>
               <a
                 href=""
@@ -332,7 +360,7 @@ export default function Vroom() {
               </a>
             </div>
           </div>
-          <div className={styles.warpContainer}>
+          <div className={`${styles.communityGridItem} ${styles.warpcast}`}>
             <a
               href="https://warpcast.com/~/channel/cars"
               target="_blank
@@ -363,7 +391,7 @@ export default function Vroom() {
               </div>
             </a>
           </div>
-          <div className={styles.basescanContainer}>
+          <div className={`${styles.communityGridItem} ${styles.basescan}`}>
             <div>
               <a
                 href="https://basescan.org/address/0x1E6bA8BC42Bbd8C68Ca7E891bAc191F0e07B1d6F"
@@ -378,7 +406,7 @@ export default function Vroom() {
               </a>
             </div>
           </div>
-          <div className={styles.zoraContainer}>
+          <div className={`${styles.communityGridItem} ${styles.zora}`}>
             <div>
               <a
                 href="https://zora.co"
@@ -393,7 +421,7 @@ export default function Vroom() {
               </a>
             </div>
           </div>
-          <div className={styles.arenaContainer}>
+          <div className={`${styles.communityGridItem} ${styles.arena}`}>
             <div>
               <a
                 href="https://www.are.na/brian-felix/vroom-e5x4pc22x14"
