@@ -84,13 +84,8 @@ export default function Vroom() {
         </nav>
         <HoverBuy />
         <Radio />
-        <div className={styles.twoImages}>
-          <div className={styles.imageItem}>
-            <img src="/taemwork-01.png"></img>
-          </div>
-          <div className={styles.imageItem}>
-            <img src="/teamwork-02.png"></img>
-          </div>
+        <div className={styles.mediaBlock}>
+          <img src="ready-set-vroom.png"></img>
         </div>
         <div className={styles.descriptionBlock}>
           <div className={styles.heading}>
@@ -161,7 +156,9 @@ export default function Vroom() {
             </dl>
           </div>
           <div className={styles.descriptionBlock}>
-            <h3>Breakdown</h3>
+          <div className={styles.subheading}>
+            <h2>Breakdown</h2>
+          </div>
             <GoogleChart
               data={chartData}
               options={chartOptions}

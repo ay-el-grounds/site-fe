@@ -43,9 +43,9 @@ export default function VroomContribution() {
       </div>
 
       <div className={styles.descriptionBlock}>
-      <div className={styles.heading}>
-        <h2>Contribute</h2>
-      </div>
+        <div className={styles.heading}>
+          <h2>Contribute</h2>
+        </div>
         <p>
           This guide outlines how to live and breathe{" "}
           <span className={styles.vroomWord}>$VROOM</span>.
@@ -76,9 +76,9 @@ export default function VroomContribution() {
       </div>
 
       <div className={styles.descriptionBlock}>
-      <div className={styles.heading}>
-        <h2>Branding Tenets</h2>
-      </div>
+        <div className={styles.heading}>
+          <h2>Branding Tenets</h2>
+        </div>
         <h3>Be Authentic</h3>
         <p>
           <span className={styles.vroomWord}>$VROOM</span> thrives on genuine
@@ -99,19 +99,20 @@ export default function VroomContribution() {
         <h3>Detail Obsession</h3>
         <p>
           Precision wins races. From visuals to messaging, ensure everything
-          aligns with the <span className={styles.vroomWord}>$VROOM</span> brand.
+          aligns with the <span className={styles.vroomWord}>$VROOM</span>{" "}
+          brand.
         </p>
         <h3>Collaborate Hard</h3>
         <p>
           Racing is a team sport. Work with others who share the{" "}
-          <span className={styles.vroomWord}>$VROOM</span> vision to draft ahead and
-          achieve more together.
+          <span className={styles.vroomWord}>$VROOM</span> vision to draft ahead
+          and achieve more together.
         </p>
       </div>
       <div className={styles.mediaBlock}>
-      <div className={styles.heading}>
-        <h2>Joining the Inner Donut</h2>
-      </div>
+        <div className={styles.heading}>
+          <h2>Joining the Inner Donut</h2>
+        </div>
         <div className={styles.diagrams}>
           <img src="/race-track.png"></img>
         </div>
@@ -121,16 +122,17 @@ export default function VroomContribution() {
         <div className={styles.paragraph}>
           <ol>
             <li>
-              Utilize <span className={styles.vroomWord}>$VROOM</span> brand assets
-              to contribute to the meme economy while adhereing to our
+              Utilize <span className={styles.vroomWord}>$VROOM</span> brand
+              assets to contribute to the meme economy while adhereing to our
               guidelines.
             </li>
             <li>Share your creations through our Race Bib Form.</li>
             <li>
               Selected works will be featured across our social channels,
               amplifying your reach within the{" "}
-              <span className={styles.vroomWord}>$VROOM</span> community. If your
-              creation is selected for minting, you&apos;ll be invited to ...
+              <span className={styles.vroomWord}>$VROOM</span> community. If
+              your creation is selected for minting, you&apos;ll be invited to
+              ...
             </li>
             <li>
               Contributors with a Race Bib NFT become esteemed members of the
@@ -150,17 +152,18 @@ export default function VroomContribution() {
         </div>
       </div>
       <div className={styles.descriptionBlock}>
-      <div className={styles.heading}>
-        <h2>$VROOM on the Assembly Line</h2>
-      </div>
+        <div className={styles.heading}>
+          <h2>$VROOM on the Assembly Line</h2>
+        </div>
         <p>
           As the world embraces electric vehicles,{" "}
-          <span className={styles.vroomWord}>$VROOM</span> captures and immortalizes
-          the beautiful sounds in a deeply abstracted way on a digital medium.
+          <span className={styles.vroomWord}>$VROOM</span> captures and
+          immortalizes the beautiful sounds in a deeply abstracted way on a
+          digital medium.
         </p>
         <p>
-          <span className={styles.vroomWord}>$VROOM</span> dropped on June 25th. In
-          a month packed with automotive history (and also PRIDE).{" "}
+          <span className={styles.vroomWord}>$VROOM</span> dropped on June 25th.
+          In a month packed with automotive history (and also PRIDE).{" "}
           <span className={styles.vroomWord}>$VROOM</span> celebrates milestones
           like the first auto race, the premiere of The Fast and the Furious
           franchise, the release of{" "}

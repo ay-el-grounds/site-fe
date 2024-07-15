@@ -170,8 +170,10 @@
   overflow: hidden;
   z-index: 30;
 
-  background-color: var(--lemon);
+  background-color: var(--white);
   transition: overflow 0.3s ease;
+
+  filter: drop-shadow(0 0 0.75rem rgba(0,0,0,0.1));
 }
 
 .radio:hover {
@@ -186,7 +188,7 @@
 }
 
 li.jukebox {
-  border-bottom: 0.5px dotted var(--white);
+  border-bottom: 5px dotted var(--minty);
   list-style: none;
 }
 
@@ -198,7 +200,9 @@ li.jukebox {
   padding: 0.5rem;
   gap: 1rem;
 
-  background-color: var(--lemon);
+  font-family: var(--ibm);
+  color: var(--onyx);
+  background-color: var(--white);
 }
 
 button.jukeboxSongs {
@@ -247,25 +251,24 @@ button.jukeboxSongs {
   font-weight: 100;
 }
 
-.subHeadingBlock {
-  margin: 16px;
-  width: 100%;
+.subheading {
+  margin: -36px -42px 16px;
+  width: calc(100% + 42px + 42px);
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   -webkit-box-pack: justify;
   justify-content: space-between;
   padding: 36px 42px;
-  border-radius: 32px;
+  border-radius: 32px 32px 0px 0px;
   overflow: hidden;
-  color: var(--lemon);
+  color: var(--white);
   background: var(--onyx);
 }
 
-.subHeadingBlock h3 {
-  font-size: larger;
-  text-transform: uppercase;
-  font-weight: 600;
+.subheading h2 {
+  font-size: 2em;
+  font-weight: 300;
 }
 
 .descriptionBlock {
@@ -660,7 +663,15 @@ button.jukeboxSongs {
   }
 
   .radio {
-    width: 75vw;
+    top: auto;
+    bottom: 0;
+    width: 100vw;
+    margin: 0px;  
+    border-radius: 32px 32px 0px 0px;
+  }
+
+  .buyButton {
+    bottom: 200px;
   }
 
   .thirdColumn {
@@ -672,18 +683,19 @@ button.jukeboxSongs {
     margin-bottom: 16px;
   }
 
-  .headingBlock {
+  .heading {
     font-size: smaller;
-    margin: 16px 0px 0px;
+    padding: 50px 42px 25px;
   }
 
-  .subHeadingBlock {
-    margin: 16px 0px 0px;
+  .subheading {
+    font-size: x-small;
+    padding: 50px 42px 25px;
   }
 
   .descriptionBlock {
     margin: 16px 0px 0px;
-    padding: 20px 20px;
+    padding: 20px;
   }
 
   .descriptionBlock p {
@@ -692,6 +704,11 @@ button.jukeboxSongs {
 
   .mediaBlock {
     margin: 16px 0px;
+    padding: 20px;
+  }
+
+  .mediaBlock .diagrams img {
+    width: 100%;
   }
   
   .mediaBlock .paragraph {
@@ -703,6 +720,11 @@ button.jukeboxSongs {
   .mediaBlock ol,
   .mediaBlock ul {
     line-height: 1.3em;
+    padding-right: 0;
+  }
+
+  .twoImages {
+    margin: 16px 0px;
   }
 
   .communityGrid {
@@ -710,7 +732,7 @@ button.jukeboxSongs {
     position: static;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 100px 100px 100px;
-    margin: 16px 0px;
+    margin: 16px 0px 32px;
     max-width: 100%;
   }
 
