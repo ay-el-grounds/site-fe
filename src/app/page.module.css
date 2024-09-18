@@ -42,6 +42,12 @@
   border-radius: var(--box-radius);
 }
 
+.navBar {
+  display: grid;
+  grid-template-columns: repeat(4, 35px);
+  gap: 5px;
+}
+
 .buyButton {
   position: fixed;
   width: 150px;
@@ -164,7 +170,7 @@
   right: 0;
   top: 50%;
   width: 25vw;
-  height: 200px;
+  height: 300px;
   margin: 16px;
   border-radius: 32px;
   overflow: hidden;
@@ -182,9 +188,8 @@
 
 .radio audio {
   position: sticky;
-  top: 0;
+  top: 50px;
   width: 100%;
-  border-radius: 0;
 }
 
 li.jukebox {
@@ -227,7 +232,6 @@ button.jukeboxSongs {
 }
 
 .heading {
-  margin: -36px -42px 16px;
   width: calc(100% + 42px + 42px);
   display: flex;
   flex-direction: column;
@@ -271,20 +275,24 @@ button.jukeboxSongs {
   font-weight: 300;
 }
 
-.descriptionBlock {
+.block {
   margin: 16px;
+  border-radius: 32px;
+  overflow: hidden;
+  width: 100%;
+}
+
+.copy {
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: stretch;
   padding: 36px 42px;
-  border-radius: 32px;
-  overflow: hidden;
   color: var(--onyx);
   background: rgb(169,203,182);
 }
 
-.descriptionBlock h3 {
+.copy h3 {
   color: var(--onyx);
   font-size: 0.9em;
   font-weight: 500;
@@ -292,20 +300,25 @@ button.jukeboxSongs {
   text-transform: uppercase;
 }
 
-.descriptionBlock h4 {
+.copy h4 {
   font-weight: 500;
   text-transform: uppercase;
   padding-bottom: 1em;
 }
 
-.descriptionBlock p {
+.copy .hero {
+  font-size: 2rem;
+  font-weight: 300;
+}
+
+.copy p {
   font-size: 1.6em;
   font-weight: 200;
   line-height: 1.3em;
   padding-bottom: 1em;
 }
 
-.descriptionBlock table {
+.copy table {
   width: 100%;
   border-collapse: collapse;
   border-radius: 10px;
@@ -313,26 +326,26 @@ button.jukeboxSongs {
   color: var(--onyx);
 }
 
-.descriptionBlock th, .descriptionBlock td {
+.copy th, .copy td {
   padding: 12px 16px;
   text-align: left;
 }
 
-.descriptionBlock th {
+.copy th {
   background-color: var(--onyx);
   color: var(--white);
   font-weight: bold;
 }
 
-.descriptionBlock tbody tr:nth-child(odd) {
+.copy tbody tr:nth-child(odd) {
   background-color: #f9f9f9;
 }
 
-.descriptionBlock tbody tr:nth-child(even) {
+.copy tbody tr:nth-child(even) {
   background-color: var(--white);
 }
 
-.descriptionBlock .note {
+.copy .note {
   font-size: 0.8em;
   color: #999;
   text-align: left;
@@ -340,7 +353,7 @@ button.jukeboxSongs {
   margin-top: 8px;
 }
 
-.descriptionBlock dl {
+.copy dl {
   display: grid;
   margin-top: 2.5em;
   grid-template-columns: calc(1.3em * 2) 1fr;
@@ -348,94 +361,79 @@ button.jukeboxSongs {
   color: #999;
 }
 
-.descriptionBlock dt {
+.copy dt {
   color: var(--rojo);
   padding-top: 5px;
   margin-right: 20px;
 }
 
-.descriptionBlock dd {
+.copy dd {
   color: var(--white);
   font-weight: 200;
 }
 
-.descriptionBlock ol,
-.descriptionBlock ul,
-.descriptionBlock li {
-  padding: 0px 36px;
-  margin-left: 2em;
-  line-height: 1.3em;
-  font-size: 1.6em;
-  margin-bottom: 1.6em;
-  font-weight: 200;
-}
-
-.descriptionBlock a {
+.copy a {
   text-decoration: underline 1px wavy;
   color: var(--rojo);
 }
 
-.descriptionBlock a:hover {
+.copy a:hover {
   font-weight: 300;
 }
 
-.mediaBlock {
-  margin: 16px;
+.backlog {
+  padding: 20px 0px;
+}
+
+.media {
   width: 100%;
   display: grid;
   grid-template-columns: 1fr;
   gap: 20px;
   align-items: stretch;
-  border-radius: 32px;
   overflow: hidden;
   color: var(--onyx);
   background: var(--fresh);
-  padding: 36px 42px;
 }
 
-.mediaBlock .diagrams {
+.diagrams {
+
+}
+
+.diagram {
   display: flex;
-  background: white;
   padding: 50px;
-  margin: -36px -42px 0px;
+  margin: 0px -42px 0px;
+  background: var(--white);
   width: calc(100% + 42px + 42px);
   justify-content: center; 
   align-items: center;
 }
 
-.mediaBlock .diagrams img {
+.diagram img {
   width: 40%;
 }
 
-.mediaBlock img {
+.diagrams .caption {
+  width: 100%;
+  color: #999;
+  background: var(--fresh);
+  padding: 20px 42px 36px;
+  font-size: 0.8em;
+}
+
+.media img {
   width: calc(100% + 42px + 42px);
   margin: -36px -42px;
 }
 
-.mediaBlock .caption {
-  width: 100%;
-  color: #999;
-  padding: 0px 42px;
-  font-size: 0.8em;
-}
-
-.mediaBlock .paragraph {
-  padding: 36px 42px;
-  width: 100%;
-  font-size: 1.6em;
+.copy ol,
+.copy ul,
+.copy li {
+  margin-left: 2em;
+  font-size: 1.3em;
+  margin-bottom: 1.6em;
   font-weight: 200;
-  padding-bottom: 1em;
-}
-
-.mediaBlock ol,
-.mediaBlock ul {
-  padding: 0px 36px;
-  list-style-type: decimal;
-}
-
-.mediaBlock li {
-  line-height: 1.3em;
-  margin-bottom: 1.4em;
 }
 
 .thirdColumn {
@@ -471,79 +469,6 @@ button.jukeboxSongs {
 .genContainer:hover {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); 
   transform: translateY(-5px);
-}
-
-.communityGrid {
-  height: 200px;
-  width: 100%;
-  display: flex;
-  gap: 16px;
-  -webkit-box-pack: justify;
-  justify-content: space-between;
-  margin: 16px;
-}
-
-.communityGridItem {
-  height: 100%;
-  width: 100%;
-  border-radius: 32px;
-  display: flex;
-  -webkit-box-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
-  justify-content: center;
-
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
-
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0); 
-  transform: translateZ(0); 
-}
-
-.communityGridItem:hover {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  transform: translateY(-5px);
-}
-
-.twitter {
-  background: rgb(152, 208, 255);
-}
-
-.instagram {
-  background: rgb(193,53,132);
-}
-
-.warpcast {
-  color: var(--white);
-  background: rgb(123,101,193);
-}
-
-.carsChannel svg {
-  margin-bottom: -10px;
-}
-
-.zora {
-  background: rgb(67,121,240);
-}
-
-.arena {
-  background: white;
-}
-
-.vroom {
-  background: var(--rojo);
-}
-
-.vroomContainer p {
-  color: var(--white);
-  font-weight: bolder;
-}
-
-.uniswap {
-  background: rgb(255,0,122);
-}
-
-.basescan {
-  background: rgb(10,11,14);
 }
 
 .newsletterContainer {
@@ -586,6 +511,17 @@ button.jukeboxSongs {
   color: rgb(13, 17, 23);
   margin-bottom: 15px;
   border-radius: 0px;
+}
+
+.errorMessage {
+  color: var(--rojo);
+  font-size: 2em;
+  font-weight: 700;
+}
+
+.successMessage {
+  color: green;
+  font-weight: 700;
 }
 
 .subButton {
@@ -693,32 +629,26 @@ button.jukeboxSongs {
     padding: 50px 42px 25px;
   }
 
-  .descriptionBlock {
+  .copy {
     margin: 16px 0px 0px;
     padding: 20px;
   }
 
-  .descriptionBlock p {
+  .copy p {
     font-size: 1.5em;
   }
 
-  .mediaBlock {
+  .media {
     margin: 16px 0px;
     padding: 20px;
   }
 
-  .mediaBlock .diagrams img {
+  .media .diagrams img {
     width: 100%;
   }
   
-  .mediaBlock .paragraph {
-    padding: 20px 0px;
-    font-size: 1.3em;
-    margin-bottom: 1.5em;
-  }
-  
-  .mediaBlock ol,
-  .mediaBlock ul {
+  .media ol,
+  .media ul {
     line-height: 1.3em;
     padding-right: 0;
   }
@@ -745,6 +675,12 @@ button.jukeboxSongs {
 @media (min-width: 701px) and (max-width: 1120px) {
   .grid {
     grid-template-columns: repeat(2, 50%);
+  }
+}
+
+@media (min-width: 1900px) {
+  .main {
+    padding: 6rem 25vw;
   }
 }
 

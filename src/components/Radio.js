@@ -9,10 +9,8 @@ export default function Radio() {
 
   useEffect(() => {
     async function fetchSongs() {
-      console.log('Fetching songs...');
       try {
         const response = await axios.get("/api/songs");
-        console.log('Songs fetched:', response.data);
         setSongs(response.data);
       } catch (error) {
         console.error("Error fetching songs:", error);

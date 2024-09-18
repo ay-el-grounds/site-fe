@@ -1,31 +1,49 @@
-// pages/api/saveEmail.js
-import fs from 'fs';
-import path from 'path';
-
-export default function handler(req, res) {
+export default async (req, res) => {
   if (req.method === 'POST') {
     const { email } = req.body;
 
-    if (!email || !email.includes('@')) {
-      return res.status(400).json({ error: 'Invalid email' });
+    if (!email) {
+      return res.status(400).json({ success: false, error: 'Email is required' });
     }
 
-    const filePath = path.resolve('emails.json');
-    let emails = [];
+    const baseId = process.env.AIRTABLE_BASE_ID;
+    const accessToken = process.env.AIRTABLE_ACCESS_TOKEN;
+    const userTable = process.env.AIRTABLE_USER_TABLE;
 
-    if (fs.existsSync(filePath)) {
-      emails = JSON.parse(fs.readFileSync(filePath));
+    if (!baseId || !accessToken) {
+      return res.status(500).json({ success: false, error: 'Server configuration error' });
     }
 
-    if (emails.includes(email)) {
-      return res.status(400).json({ error: 'Email already exists' });
+    try {
+      const response = await fetch(`https://api.airtable.com/v0/${baseId}/${userTable}`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          fields: {
+            Email: email,
+          },
+        }),
+      });
+
+      const responseData = await response.json();
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText} - ${JSON.stringify(responseData)}`);
+      }
+
+      res.status(200).json({ success: true, data: responseData });
+    } catch (error) {
+      console.error('Error creating Airtable record:', error);
+      res.status(500).json({ success: false, error: 'Internal Server Error' });
     }
-
-    emails.push(email);
-    fs.writeFileSync(filePath, JSON.stringify(emails, null, 2));
-
-    return res.status(200).json({ message: 'Email saved' });
   } else {
-    return res.status(405).json({ error: 'Method not allowed' });
+    res.status(405).json({ success: false, error: 'Method Not Allowed' });
   }
-}
+};
+
+const accessToken = process.env.AIRTABLE_ACCESS_TOKEN;
+
+

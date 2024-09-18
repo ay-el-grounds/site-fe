@@ -1,8 +1,11 @@
-import React from 'react';
-import IconSvg from '../../public/SVG/lettermark.svg'; // adjust the path as necessary
+import React from "react";
+import IconSvg from "../../public/SVG/lettermark.svg";
+import Link from "next/link";
 
-const AG = ({ fill = 'black', width = 500, height = 'auto' }) => (
-  <IconSvg style={{ fill: fill, width: width, height: height }} />
+const AG = ({ fill = "black", width = 500, height = "auto" }) => (
+  <Link href="/">
+    <IconSvg style={{ fill: fill, width: width, height: height }} />
+  </Link>
 );
 
 export default AG;
