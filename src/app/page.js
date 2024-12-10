@@ -21,7 +21,7 @@ export default function Home() {
         </div> */}
           <div className={styles.navBar}>
             <div className={styles.collabContainer}>
-              <a href="mailto:aluminumgrounds@gmail.com">
+              <a href="mailto:aluminumgrounds@gmail.com" target="_blank">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="100%"

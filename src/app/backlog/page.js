@@ -41,23 +41,23 @@ export default function Backlog() {
             &apos;drops.&apos; For the ideas below, we&apos;d like your help.
           </p>
           <p>
-            In their current form, they&apos;re shower thoughts -- we don&apos;t know
-            whether they&apos;re viable drops, but something about them seemed like a
-            compelling narrative may emerge after some exploration. We like to
-            build in public.
+            In their current form, they&apos;re shower thoughts -- we don&apos;t
+            know whether they&apos;re viable drops, but something about them
+            seemed like a compelling narrative may emerge after some
+            exploration. We like to build in public.
           </p>
           <div className={styles.backlog}>
-          <table>
+            <table>
               <thead>
                 <tr>
-                  <th>Date</th>
+                  <th>Serial</th>
                   <th>Description</th>
                   <th>Status</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
-                  <td>2024-08-14</td>
+                  <td>2024.0.001</td>
                   <td>
                     <strong>Aluminum Grounds Merch</strong> (Lighters, t-shirts,
                     etc.)
@@ -65,20 +65,48 @@ export default function Backlog() {
                   <td>Started</td>
                 </tr>
                 <tr>
-                  <td>2024-09-17</td>
-                  <td>Pending Approval</td>
+                  <td>2024.0.002</td>
+                  <td>Tire line called $VROOM</td>
+                  <td>Idea</td>
+                </tr>
+                <tr>
+                  <td>2024.0.003</td>
+                  <td>
+                    &quo;windows cranks.&quo; Car roll-up window crank w/
+                    skateboard wheel as a knob.
+                  </td>
                   <td>Backlog</td>
                 </tr>
                 <tr>
-                  <td>2024-09-17</td>
-                  <td>Pending Approval</td>
+                  <td>2023.0.001</td>
+                  <td>tooLs for builders NFT collection</td>
+                  <td>Evaluation</td>
+                </tr>
+                <tr>
+                  <td>2024.0.006</td>
+                  <td>Jack Boys/Travis Scott collab</td>
+                  <td>Idea</td>
+                </tr>
+                <tr>
+                  <td>2023.0.002</td>
+                  <td>Adorable Engines NFT collection</td>
+                  <td>Evaluation</td>
+                </tr>
+                <tr>
+                  <td>2024.0.007</td>
+                  <td>ASAP/Tyler the Creator/AWGE collab</td>
+                  <td>Idea</td>
+                </tr>
+                <tr>
+                  <td>2023.0.003</td>
+                  <td>Astrology/Horoscope collaborations</td>
                   <td>Backlog</td>
                 </tr>
               </tbody>
             </table>
           </div>
         </div>
-        <Community platforms={['twitter', 'instagram', 'warpcast']} />
+        <Community platforms={["twitter", "instagram", "warpcast"]} />
         <EmailSub />
         <FinePrint />
       </main>
