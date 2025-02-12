@@ -1,72 +1,73 @@
 .communityGrid {
-    height: 200px;
-    width: 100%;
-    display: flex;
-    gap: 16px;
-    -webkit-box-pack: justify;
-    justify-content: space-between;
-    margin: 16px;
-  }
-  
-  .communityGridItem {
-    height: 100%;
-    width: 100%;
-    border-radius: 32px;
-    display: flex;
-    -webkit-box-align: center;
-    align-items: center;
-    -webkit-box-pack: center;
-    justify-content: center;
-  
-    transition: box-shadow 0.3s ease, transform 0.3s ease;
-  
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0); 
-    transform: translateZ(0); 
-  }
-  
-  .communityGridItem:hover {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    transform: translateY(-5px);
-  }
-  
-  .twitter {
-    background: rgb(152, 208, 255);
-  }
-  
-  .instagram {
-    background: rgb(193,53,132);
-  }
-  
-  .warpcast {
-    color: var(--white);
-    background: rgb(123,101,193);
-  }
-  
-  .carsChannel svg {
-    margin-bottom: -10px;
-  }
-  
-  .zora {
-    background: rgb(67,121,240);
-  }
-  
-  .arena {
-    background: white;
-  }
-  
-  .vroom {
-    background: var(--rojo);
-  }
-  
-  .vroomContainer p {
-    color: var(--white);
-    font-weight: bolder;
-  }
-  
-  .uniswap {
-    background: rgb(255,0,122);
-  }
-  
-  .basescan {
-    background: rgb(10,11,14);
-  }
+  height: 200px;
+  width: 100%;
+  display: flex;
+  gap: 16px;
+  -webkit-box-pack: justify;
+  justify-content: space-between;
+  margin: 16px;
+}
+
+.communityGridItem {
+  height: 100%;
+  width: 100%;
+  border-radius: 32px;
+  display: flex;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0); 
+  transform: translateZ(0); 
+  cursor: pointer;
+}
+
+.communityGridItem:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transform: translateY(-5px);
+}
+
+.twitter {
+  background: rgb(152, 208, 255);
+}
+
+.instagram {
+  background: rgb(193,53,132);
+}
+
+.warpcast {
+  color: var(--white);
+  background: rgb(123,101,193);
+}
+
+.carsChannel svg {
+  margin-bottom: -10px;
+}
+
+.zora {
+  background: rgb(67,121,240);
+}
+
+.arena {
+  background: white;
+}
+
+.vroom {
+  background: var(--rojo);
+}
+
+.vroomContainer p {
+  color: var(--white);
+  font-weight: bolder;
+}
+
+.uniswap {
+  background: rgb(255,0,122);
+}
+
+.basescan {
+  background: rgb(10,11,14);
+}

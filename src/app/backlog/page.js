@@ -19,7 +19,7 @@ export default function Backlog() {
           <div className={styles.filterOption}>Drops</div>
         </div> */}
           <div className={styles.collabContainer}>
-            <a href="mailto:aluminumgrounds@gmail.com">
+            <a href="mailto:aluminumgrounds@gmail.com" target="_blank">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="100%"
@@ -59,10 +59,15 @@ export default function Backlog() {
                 <tr>
                   <td>2024.0.001</td>
                   <td>
-                    <strong>Aluminum Grounds Merch</strong> (Lighters, t-shirts,
+                    Aluminum Grounds Merch (Lighters, t-shirts,
                     etc.)
                   </td>
                   <td>Started</td>
+                </tr>
+                <tr>
+                  <td>2025.0.001</td>
+                  <td>Oil Change, Etc. (Mobile App)</td>
+                  <td>In Progress</td>
                 </tr>
                 <tr>
                   <td>2024.0.002</td>
@@ -72,7 +77,7 @@ export default function Backlog() {
                 <tr>
                   <td>2024.0.003</td>
                   <td>
-                    &quo;windows cranks.&quo; Car roll-up window crank w/
+                    &quo;windows cranks&quo; Car roll-up window crank w/
                     skateboard wheel as a knob.
                   </td>
                   <td>Backlog</td>
