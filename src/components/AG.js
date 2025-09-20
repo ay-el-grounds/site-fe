@@ -1,10 +1,11 @@
 import React from "react";
 import IconSvg from "../../public/SVG/lettermark.svg";
 import Link from "next/link";
+import styles from "./AG.module.css";
 
-const AG = ({ fill = "black", width = 500, height = "auto" }) => (
+const AG = ({ fill = "red" }) => (
   <Link href="/">
-    <IconSvg style={{ fill: fill, width: width, height: height }} />
+    <IconSvg className={styles.logo} style={{ fill: fill }} />
   </Link>
 );
 

@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@farcaster/frame-sdk": "^0.0.31",
     "@svgr/webpack": "^8.1.0",
     "axios": "^1.7.2",
     "chrome-aws-lambda": "^10.1.0",

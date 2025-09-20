@@ -385,6 +385,11 @@ button.jukeboxSongs {
   padding: 20px 0px;
 }
 
+.clutch tr:hover {
+  color: var(--rojo);
+  transition: all ease-in-out 0.2s;
+}
+
 .media {
   width: 100%;
   display: grid;
