@@ -1,5 +1,5 @@
 import "./globals.css";
-import { FrameInit } from "@/components/FrameInit";
+// import { FrameInit } from "@/components/FrameInit";
 
 export const metadata = {
   title: {
@@ -51,7 +51,7 @@ export default function RootLayout({ children }) {
       <body>
         <div>
           {children}
-          <FrameInit />
+          {/* <FrameInit /> */}
         </div>
       </body>
     </html>
