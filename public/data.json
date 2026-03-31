@@ -1,0 +1,107 @@
+[
+    {
+        "id": null,
+      "name": "Midnight JDM Meet",
+      "category": "Event",
+      "location": "Los Angeles, CA",
+      "date": "2025-03-15",
+      "rsvpLink": "https://example.com/midnight-jdm-meet",
+      "niche": "JDM Car Meet",
+      "portfolio": null,
+      "followers": null,
+      "contact": "midnightmeet@example.com",
+      "notes": "Annual JDM night meet with drifting and car showcases."
+    },
+    {
+        "id": null,
+      "name": "Muscle Car Legends Club",
+      "category": "Car Club",
+      "location": "New York, NY",
+      "date": null,
+      "rsvpLink": "https://musclecarlegends.com/join",
+      "niche": "Muscle Cars",
+      "portfolio": null,
+      "followers": null,
+      "contact": "@musclecarlegends",
+      "notes": "Exclusive club for classic and modern muscle car owners."
+    },
+    {
+        "id": null,
+      "name": "Boosted Garage YouTube",
+      "category": "Content Creator",
+      "location": null,
+      "date": null,
+      "rsvpLink": null,
+      "niche": "Turbo Builds & Tuning",
+      "portfolio": "https://youtube.com/boostedgarage",
+      "followers": 150000,
+      "contact": "boostedgarage@gmail.com",
+      "notes": "High-performance builds and tuning walkthroughs."
+    },
+    {
+        "id": null,
+      "name": "Street Lens Photography",
+      "category": "Photographer",
+      "location": "Chicago, IL",
+      "date": null,
+      "rsvpLink": null,
+      "niche": "Car Event Photography",
+      "portfolio": "https://instagram.com/streetlensphoto",
+      "followers": 32000,
+      "contact": "streetlensphoto@gmail.com",
+      "notes": "Specializing in rolling shots and event coverage."
+    },
+    {
+        "id": null,
+      "name": "Euro Stance Fest",
+      "category": "Event",
+      "location": "Berlin, Germany",
+      "date": "2025-06-10",
+      "rsvpLink": "https://eurostancefest.com/tickets",
+      "niche": "European Stance & Fitment",
+      "portfolio": null,
+      "followers": null,
+      "contact": "contact@eurostancefest.com",
+      "notes": "One of the biggest Euro car festivals in Europe."
+    },
+    {
+        "id": null,
+      "name": "West Coast Off-Road Club",
+      "category": "Car Club",
+      "location": "San Diego, CA",
+      "date": null,
+      "rsvpLink": "https://offroadwest.com/signup",
+      "niche": "Off-Road & Overlanding",
+      "portfolio": null,
+      "followers": null,
+      "contact": "westcoastoffroad@gmail.com",
+      "notes": "Weekly off-road expeditions and trail rides."
+    },
+    {
+        "id": null,
+      "name": "Drift Kings Podcast",
+      "category": "Content Creator",
+      "location": null,
+      "date": null,
+      "rsvpLink": null,
+      "niche": "Drifting Culture & News",
+      "portfolio": "https://spotify.com/driftkings",
+      "followers": 54000,
+      "contact": "driftkingspodcast@example.com",
+      "notes": "Interviews with top drifters and event recaps."
+    },
+    {
+        "id": null,
+      "name": "Rolling Thunder Media",
+      "category": "Photographer",
+      "location": "Austin, TX",
+      "date": null,
+      "rsvpLink": null,
+      "niche": "Performance Car Shoots",
+      "portfolio": "https://rollingthundermedia.com",
+      "followers": 21000,
+      "contact": "info@rollingthundermedia.com",
+      "notes": "Available for commercial automotive photography and rolling shots."
+    }
+  ]
+  

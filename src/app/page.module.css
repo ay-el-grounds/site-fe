@@ -5,47 +5,9 @@
   font-family: var(--ibm);
 }
 
-.header {
-  width: 100%;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-  align-items: end;
-  -webkit-box-pack: justify;
-  margin: 0 16px;
-}
-
-.logoAG {
-  display: flex;
-  padding: 36px 42px;
-  background-color: var(--lemon);
-  border-radius: 30px;
-}
-
-.logoVROOM {
-  display: flex;
-  padding: 36px 42px;
-  background-color: var(--rojo);
-  border-radius: 30px;
-}
-
 .vroomWord {
   font-weight: 600;
   font-style: italic;
-}
-
-.homeButton {
-  padding: 5px 10px;
-  width: 35px;
-  background-color: var(--onyx);
-  color: var(--white);
-  border-radius: var(--box-radius);
-}
-
-.navBar {
-  display: grid;
-  grid-template-columns: repeat(4, 35px);
-  gap: 5px;
 }
 
 .buyButton {
@@ -143,28 +105,6 @@
   color: rgb(13, 17, 23);
 }
 
-.collabContainer {
-  display: flex;
-  padding: 10px 10px;
-  border-radius: 32px;
-
-  max-width: 35px;
-  max-height: 35px;
-
-  align-items: center;
-  justify-content: center;
-
-  background: var(--onyx);
-  
-  font-size: 18px;
-  font-family: var(--ibm);
-  text-transform: uppercase;
-  font-weight: 200;
-  color: var(--white);
-
-  cursor: pointer;
-}
-
 .radio {
   position: fixed;
   right: 0;
@@ -248,11 +188,13 @@ button.jukeboxSongs {
 .heading h2 {
   font-size: 2em;
   font-weight: 300;
+  letter-spacing: 0.05em;
 }
 
 .heading h4 {
   margin-top: 2px;
   font-weight: 100;
+  letter-spacing: 0.05em;
 }
 
 .subheading {
@@ -273,6 +215,7 @@ button.jukeboxSongs {
 .subheading h2 {
   font-size: 2em;
   font-weight: 300;
+  letter-spacing: 0.05em;
 }
 
 .block {
@@ -297,12 +240,14 @@ button.jukeboxSongs {
   font-size: 0.9em;
   font-weight: 500;
   line-height: 1.5em;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
 }
 
 .copy h4 {
   font-weight: 500;
   text-transform: uppercase;
+  letter-spacing: 0.05em;
   padding-bottom: 1em;
 }
 
@@ -581,22 +526,6 @@ button.jukeboxSongs {
     min-height: 100vh;
     background-color: var(--minty);
     font-family: var(--ibm);
-  }
-
-  .header {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 16px;
-    margin: 0px;
-  }
-
-  .logoVROOM {
-    width: calc(100vw - 16px);
-  }
-
-  .logoAG {
-    width: calc(100vw - 16px);
-    padding: 20px;
   }
 
   .hoverButton {

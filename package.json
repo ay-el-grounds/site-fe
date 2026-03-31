@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "eslint . --ext .js,.jsx,.mjs"
   },
   "dependencies": {
     "@farcaster/frame-sdk": "^0.0.31",
@@ -15,14 +15,14 @@
     "chrome-aws-lambda": "^10.1.0",
     "google-charts": "^2.0.0",
     "loader": "^2.1.1",
-    "next": "14.2.3",
+    "next": "15.5.9",
     "next-api-og-image": "^4.3.0",
-    "react": "^18",
-    "react-dom": "^18"
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1"
   },
   "devDependencies": {
     "@types/react": "19.1.13",
-    "eslint": "^8",
-    "eslint-config-next": "14.2.3"
+    "eslint": "^9.35.0",
+    "eslint-config-next": "15.5.9"
   }
 }

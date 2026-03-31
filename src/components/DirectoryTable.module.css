@@ -1,0 +1,70 @@
+.chip {
+  --color: #6c6;
+  font-size: 1rem;
+  appearance: none;
+  position: relative;
+  border: 0.5px solid black;
+  border-radius: 100em;
+  overflow: clip;
+  margin: 5px;
+  display: inline-block;
+  box-sizing: border-box;
+  padding: 0;
+  cursor: pointer;
+}
+
+.chip::after {
+  content: attr(value);
+  white-space: pre;
+  line-height: 1;
+  position: relative;
+  padding: 0.5em 1em 0.5em 2em;
+  display: block;
+}
+
+.chip::before {
+  content: "";
+  display: inline-block;
+  width: 0.75em;
+  aspect-ratio: 1;
+  background-size: 1em 0.125em, 0.125em 1em;
+  background-color: var(--color);
+  border-radius: 50%;
+  position: absolute;
+  transform: translate(-30%, -50%);
+  transition: width 0.25s, background-position 0.5s;
+}
+
+.chip.grow::before {
+  background-position: 50% 50%, 50% 50%, 50% 50%;
+  background-size: 0 0, 0 0;
+  transition: width 0.25s, background-size 0.5s;
+}
+
+.chip:checked::before {
+  width: 200%;
+  background-position: 50% 50%, 50% 50%, 50% 50%;
+  background-size: 1em 0.125em, 0.125em 1em;
+}
+
+.chip:disabled {
+  --color: #eee !important;
+  color: #6c6c6c;
+  border-color: #0001;
+}
+
+.chip:hover:not(:disabled) {
+  border-color: #000a;
+  background-color: rgba(108, 204, 108, 0.1);
+  transition: 0.4s;
+}
+
+.tableContainer {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.groups {
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
