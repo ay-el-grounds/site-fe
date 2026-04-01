@@ -8,6 +8,41 @@
   font-family: var(--ibm);
 }
 
+.actionBar {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin: 0 16px 1rem;
+}
+
+.actionButtonPrimary,
+.actionButtonSecondary {
+  min-height: 44px;
+  padding: 0.85rem 1.15rem;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  font-family: var(--ibm);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+}
+
+.actionButtonPrimary {
+  background: var(--rojo);
+  color: var(--white);
+}
+
+.actionButtonSecondary {
+  background: rgba(255, 255, 248, 0.78);
+  color: var(--onyx);
+  border-color: rgba(46, 52, 50, 0.12);
+}
+
+.printSurface {
+  display: block;
+}
+
 .hero {
   display: grid;
   grid-template-columns: minmax(0, 1.6fr) minmax(260px, 0.8fr);
@@ -287,6 +322,10 @@
   color: rgba(46, 52, 50, 0.8);
 }
 
+.footerInvitation {
+  margin-top: 10px;
+}
+
 @media (max-width: 960px) {
   .hero,
   .storyGrid,
@@ -302,6 +341,11 @@
 @media (max-width: 700px) {
   .page {
     padding: 1rem;
+  }
+
+  .actionBar {
+    flex-direction: column;
+    margin: 0 0 1rem;
   }
 
   .hero,
@@ -322,5 +366,45 @@
   .roadmapItem,
   .footerCard {
     border-radius: 24px;
+  }
+}
+
+@media print {
+  @page {
+    size: auto;
+    margin: 0.5in;
+  }
+
+  .page {
+    padding: 0;
+    background: white;
+    color: var(--onyx);
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  .noPrint {
+    display: none !important;
+  }
+
+  .hero,
+  .storyGrid,
+  .stats,
+  .dealBox,
+  .fundsSection,
+  .roadmapSection,
+  .footerCard {
+    break-inside: avoid;
+  }
+
+  .heroIntro,
+  .raiseCard,
+  .panel,
+  .statCard,
+  .fundCard,
+  .roadmapItem,
+  .footerCard,
+  .dealBox {
+    box-shadow: none;
   }
 }
