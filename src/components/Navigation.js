@@ -1,8 +1,18 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import AG from "@/components/AG";
 import styles from "./Navigation.module.css";
 
-const DEFAULT_ITEMS = ["email", "backlog", "clutch", "caracter", "third-place"];
+const DEFAULT_ITEMS = [
+  "email",
+  "read",
+  "backlog",
+  "clutch",
+  "caracter",
+  "third-place",
+];
 
 const navItems = {
   email: {
@@ -23,35 +33,45 @@ const navItems = {
       </svg>
     ),
   },
-  backlog: {
-    href: "/backlog",
-    label: "Backlog",
+  read: {
+    href: "/read",
+    label: "Read",
     icon: (
       <svg
-        version="1.1"
-        id="Layer_1"
+        width="16"
+        height="16"
+        viewBox="0 0 16 16"
         xmlns="http://www.w3.org/2000/svg"
-        xmlnsXlink="http://www.w3.org/1999/xlink"
-        x="0px"
-        y="0px"
-        viewBox="0 0 500 500"
-        enableBackground="new 0 0 500 500"
-        xmlSpace="preserve"
-        fill="currentColor"
-        width="15"
-        height="15"
+        fill="none"
       >
         <path
-          d="M457.9,3H200.1H159H42.1H4.9H1v494h3.9h37.2H159h41.1h257.8H499v-41.1V346v-41V195v-41V44.1V3H457.9z M159,44.1
-      V154H42.1V44.1H159z M159,195v110H42.1V195H159z M42.1,455.9V346H159v109.9H42.1z M457.9,455.9H200.1V346h257.8V455.9z
-      M457.9,305H200.1V195h257.8V305z M457.9,154H200.1V44.1h257.8V154z"
+          d="M3 3.5A1.5 1.5 0 0 1 4.5 2H13v11.5H4.5A1.5 1.5 0 0 0 3 15V3.5Zm0 0V13"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
-        <rect x="214.7" y="81.3" width="229.5" height="35.4" />
-        <rect x="214.8" y="232.3" width="229.5" height="35.4" />
-        <rect x="214.8" y="383.3" width="229.5" height="35.4" />
-        <polygon points="150.9,80.2 126.5,55.8 89.7,92.6 72.1,75.1 46.9,100.4 88.7,142.2 88.8,142.1 88.9,142.2" />
-        <polygon points="150.9,231.2 126.5,206.8 89.7,243.6 72.1,226.1 46.9,251.4 88.7,293.2 88.8,293.1 88.9,293.2" />
-        <polygon points="150.9,382.2 126.5,357.8 89.7,394.6 72.1,377.1 46.9,402.4 88.7,444.2 88.8,444.1 88.9,444.2" />
+        <path
+          d="M6 5.5H10.5M6 8H10.5"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+        />
+      </svg>
+    ),
+  },
+    "third-place": {
+    href: "/third-place",
+    label: "Third Place",
+    icon: (
+      <svg
+        width="16"
+        height="16"
+        viewBox="0 0 16 16"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <circle cx="8" cy="8" r="5.5" fill="#D9261F" />
       </svg>
     ),
   },
@@ -90,25 +110,56 @@ const navItems = {
       </svg>
     ),
   },
-  "third-place": {
-    href: "/third-place",
-    label: "Third Place",
+  backlog: {
+    href: "/backlog",
+    label: "Backlog",
     icon: (
       <svg
-        width="16"
-        height="16"
-        viewBox="0 0 16 16"
-        fill="none"
+        version="1.1"
+        id="Layer_1"
         xmlns="http://www.w3.org/2000/svg"
+        xmlnsXlink="http://www.w3.org/1999/xlink"
+        x="0px"
+        y="0px"
+        viewBox="0 0 500 500"
+        enableBackground="new 0 0 500 500"
+        xmlSpace="preserve"
+        fill="currentColor"
+        width="15"
+        height="15"
       >
-        <circle cx="8" cy="8" r="5.5" fill="#D9261F" />
+        <path
+          d="M457.9,3H200.1H159H42.1H4.9H1v494h3.9h37.2H159h41.1h257.8H499v-41.1V346v-41V195v-41V44.1V3H457.9z M159,44.1
+      V154H42.1V44.1H159z M159,195v110H42.1V195H159z M42.1,455.9V346H159v109.9H42.1z M457.9,455.9H200.1V346h257.8V455.9z
+      M457.9,305H200.1V195h257.8V305z M457.9,154H200.1V44.1h257.8V154z"
+        />
+        <rect x="214.7" y="81.3" width="229.5" height="35.4" />
+        <rect x="214.8" y="232.3" width="229.5" height="35.4" />
+        <rect x="214.8" y="383.3" width="229.5" height="35.4" />
+        <polygon points="150.9,80.2 126.5,55.8 89.7,92.6 72.1,75.1 46.9,100.4 88.7,142.2 88.8,142.1 88.9,142.2" />
+        <polygon points="150.9,231.2 126.5,206.8 89.7,243.6 72.1,226.1 46.9,251.4 88.7,293.2 88.8,293.1 88.9,293.2" />
+        <polygon points="150.9,382.2 126.5,357.8 89.7,394.6 72.1,377.1 46.9,402.4 88.7,444.2 88.8,444.1 88.9,444.2" />
       </svg>
     ),
   },
+
 };
 
 export default function Navigation({ items = DEFAULT_ITEMS }) {
-  const visibleItems = items.filter((item) => navItems[item]);
+  const pathname = usePathname();
+  const visibleItems = items.filter((item) => {
+    const config = navItems[item];
+
+    if (!config) {
+      return false;
+    }
+
+    if (config.external) {
+      return true;
+    }
+
+    return config.href !== pathname;
+  });
 
   return (
     <nav className={styles.header}>

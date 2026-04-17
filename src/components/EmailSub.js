@@ -1,6 +1,6 @@
 "use client";
 import { useState } from "react";
-import styles from "../app/page.module.css";
+import styles from "./EmailSub.module.css";
 
 export default function EmailSub() {
   const [email, setEmail] = useState("");

@@ -1,17 +1,17 @@
 .header {
-  width: 100%;
+  width: auto;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
+  gap: var(--tile-gap);
   align-items: end;
-  margin: 0 16px 16px;
+  margin: 0 auto var(--tile-gap);
 }
 
 .logoAG {
   display: flex;
-  padding: 36px 42px;
-  background-color: var(--lemon);
-  border-radius: 30px;
+  padding: var(--tile-padding);
+  background-color: var(--bg-highlight);
+  border-radius: var(--radius-xl);
 }
 
 .navBar {
@@ -25,28 +25,28 @@
 .collabContainer {
   display: flex;
   padding: 10px;
-  border-radius: 32px;
+  border-radius: var(--radius-xl);
   max-width: 35px;
   max-height: 35px;
   align-items: center;
   justify-content: center;
-  background: var(--onyx);
-  font-size: 18px;
-  font-family: var(--ibm);
+  background: var(--bg-surface-strong);
+  font-size: var(--text-lg);
+  font-family: var(--font-body);
   text-transform: uppercase;
-  font-weight: 200;
-  color: var(--white);
+  font-weight: var(--weight-light);
+  color: var(--text-inverse);
   cursor: pointer;
 }
 
 @media (max-width: 700px) {
   .header {
     grid-template-columns: 1fr;
-    margin: 0 0 16px;
+    margin: 0 0 var(--tile-gap);
   }
 
   .logoAG {
-    width: calc(100vw - 16px);
-    padding: 20px;
+    width: 100%;
+    padding: var(--tile-padding-mobile);
   }
 }

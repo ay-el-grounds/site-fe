@@ -9,7 +9,7 @@ export default function Clutch() {
   return (
     <>
       <main className={styles.main}>
-        <Navigation items={["email", "backlog", "caracter", "third-place"]} />
+        <Navigation items={["email", "read", "backlog", "caracter", "third-place"]} />
         <div className={`${styles.block} ${styles.copy}`}>
           <p className={`${styles.hero}`}>Clutch</p>
           <p>A car culture database</p>

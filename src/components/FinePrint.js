@@ -1,4 +1,4 @@
-import styles from "../app/page.module.css";
+import styles from "./FinePrint.module.css";
 
 export default function FinePrint() {
   return (

@@ -10,15 +10,21 @@
   },
   "dependencies": {
     "@farcaster/frame-sdk": "^0.0.31",
+    "@mdx-js/loader": "^3.1.1",
+    "@mdx-js/react": "^3.1.1",
+    "@next/mdx": "^16.2.4",
     "@svgr/webpack": "^8.1.0",
+    "@types/mdx": "^2.0.13",
     "axios": "^1.7.2",
     "chrome-aws-lambda": "^10.1.0",
     "google-charts": "^2.0.0",
+    "gray-matter": "^4.0.3",
     "loader": "^2.1.1",
     "next": "15.5.9",
     "next-api-og-image": "^4.3.0",
     "react": "^19.1.1",
-    "react-dom": "^19.1.1"
+    "react-dom": "^19.1.1",
+    "remark-frontmatter": "^5.0.0"
   },
   "devDependencies": {
     "@types/react": "19.1.13",

@@ -1,0 +1,83 @@
+.newsletterContainer {
+  margin: var(--tile-gap) auto;
+  padding: 45px 40px;
+  height: 100%;
+  width: min(100%, var(--max-width));
+  border-radius: var(--radius-xl);
+  background: var(--bg-surface);
+  box-shadow: transparent 0px 0px 0px 2px inset;
+  overflow: hidden;
+}
+
+.newsletterCopy h2 {
+  font-size: 24px;
+  line-height: 32px;
+  font-weight: var(--weight-medium);
+  margin-bottom: 10px;
+}
+
+.newsletterCopy p {
+  font-size: 15px;
+  line-height: 26px;
+  letter-spacing: 0.5px;
+  font-weight: var(--weight-regular);
+  margin-bottom: 10px;
+}
+
+.formContainer {
+  display: grid;
+  gap: var(--space-4);
+}
+
+.subscribeContainer {
+  width: 100%;
+}
+
+.news {
+  border-top: none;
+  border-right: none;
+  border-left: none;
+  width: 100%;
+  background: transparent;
+  border-bottom: 2px solid var(--border-input);
+  padding: 16px 10px;
+  font-size: 16px;
+  letter-spacing: 0.25px;
+  font-weight: var(--weight-regular);
+  color: var(--text-primary);
+  margin-bottom: 15px;
+  border-radius: 0px;
+}
+
+.errorMessage {
+  color: var(--text-accent);
+  font-size: 2em;
+  font-weight: 700;
+}
+
+.successMessage {
+  color: green;
+  font-weight: 700;
+}
+
+.subButton {
+  background-color: var(--bg-accent);
+  border-radius: var(--radius-pill);
+  border: none;
+  margin-top: 10px;
+  padding: 15px var(--space-5);
+  align-items: center;
+  font-size: 18px;
+  font-family: var(--font-body);
+  text-transform: uppercase;
+  font-weight: 100;
+  color: var(--text-inverse);
+  cursor: pointer;
+}
+
+@media (max-width: 700px) {
+  .newsletterContainer {
+    margin: 148px 0px 0px;
+    width: 100%;
+  }
+}

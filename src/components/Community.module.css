@@ -1,32 +1,32 @@
 .communityGrid {
   height: 200px;
-  width: 100%;
+  width: auto;
   display: flex;
-  gap: 16px;
+  gap: var(--tile-gap);
   -webkit-box-pack: justify;
   justify-content: space-between;
-  margin: 16px;
+  margin: var(--tile-gap);
 }
 
 .communityGridItem {
   height: 100%;
   width: 100%;
-  border-radius: 32px;
+  border-radius: var(--radius-xl);
   display: flex;
   -webkit-box-align: center;
   align-items: center;
   -webkit-box-pack: center;
   justify-content: center;
 
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  transition: box-shadow var(--duration-slow) var(--ease-standard), transform var(--duration-slow) var(--ease-standard);
 
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0); 
+  box-shadow: var(--shadow-rest);
   transform: translateZ(0); 
   cursor: pointer;
 }
 
 .communityGridItem:hover {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--shadow-lift);
   transform: translateY(-5px);
 }
 
@@ -39,7 +39,7 @@
 }
 
 .warpcast {
-  color: var(--white);
+  color: var(--text-inverse);
   background: rgb(123,101,193);
 }
 
@@ -52,15 +52,15 @@
 }
 
 .arena {
-  background: white;
+  background: var(--bg-surface);
 }
 
 .vroom {
-  background: var(--rojo);
+  background: var(--bg-accent);
 }
 
 .vroomContainer p {
-  color: var(--white);
+  color: var(--text-inverse);
   font-weight: bolder;
 }
 
@@ -77,12 +77,12 @@
   .communityGrid {
     flex-direction: column;
     margin: 0;
-    margin-top: 16px;
+    margin-top: var(--tile-gap);
     display: contents;
   }
   .communityGridItem {
     max-width: 100%;
-    margin: 16px 0px;
+    margin: var(--tile-gap) 0px;
     height: 20vh;
   }
 }

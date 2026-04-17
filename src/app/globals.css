@@ -5,16 +5,120 @@
   --border-radius: 12px;
   --ibm: "IBM Plex Mono", monospace;
 
-  --rojo: #D9261F; 
-  --lemon: #ECEA5F;
-  --minty: #EEEDC9;
-  --onyx: #2E3432;
-  --fresh: #A9CBB5;
+  /* Primitive palette */
+  --color-red: #D9261F;
+  --color-yellow: #ECEA5F;
+  --color-cream: #EEEDC9;
+  --color-charcoal: #2E3432;
+  --color-green: #A9CBB5;
+  --color-white: #FFFFF8;
+  --color-black: #111111;
 
-  --white: #fffff8;
-  --black: #111111; 
+  /* Backwards-compatible aliases */
+  --rojo: var(--color-red);
+  --lemon: var(--color-yellow);
+  --minty: var(--color-cream);
+  --onyx: var(--color-charcoal);
+  --fresh: var(--color-green);
+  --white: var(--color-white);
+  --black: var(--color-black);
 
-  --box-radius: 16px;
+  /* Semantic color tokens */
+  --bg-page: var(--color-cream);
+  --bg-surface: var(--color-white);
+  --bg-surface-alt: var(--color-green);
+  --bg-surface-strong: var(--color-charcoal);
+  --bg-accent: var(--color-red);
+  --bg-highlight: var(--color-yellow);
+  --text-primary: var(--color-charcoal);
+  --text-inverse: var(--color-white);
+  --text-accent: var(--color-red);
+  --text-muted: #999999;
+  --border-soft: rgba(0, 0, 0, 0.08);
+  --border-input: rgb(240, 242, 248);
+
+  /* Typography */
+  --font-body: var(--ibm);
+  --font-display: var(--ibm);
+
+  --weight-light: 200;
+  --weight-book: 300;
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+
+  --text-xs: 0.8rem;
+  --text-2xs: 0.72rem;
+  --text-sm: 0.95rem;
+  --text-md: 1rem;
+  --text-md-plus: 1.15rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.5rem;
+  --text-2xl: 2rem;
+  --text-3xl: 2.5rem;
+
+  --leading-tight: 1.1;
+  --leading-flat: 0.95;
+  --leading-snug: 1.25;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.65;
+  --leading-copy: 1.75;
+  --leading-loose: 1.8;
+
+  --tracking-tight: -0.02em;
+  --tracking-display: -0.05em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.04em;
+  --tracking-wider: 0.06em;
+  --tracking-caps: 0.12em;
+
+  --measure-copy: 44rem;
+  --measure-copy-narrow: 40rem;
+  --measure-copy-wide: 42rem;
+  --measure-card: 34rem;
+
+  /* Spacing */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-9: 2.25rem;
+  --space-10: 2.5rem;
+  --space-11: 2.625rem;
+  --space-12: 3rem;
+  --space-13: 3.125rem;
+
+  --page-padding: 6rem;
+  --page-padding-mobile: 0.5rem;
+  --tile-gap: var(--space-4);
+  --tile-gap-lg: var(--space-5);
+  --tile-padding: var(--space-9) var(--space-11);
+  --tile-padding-mobile: var(--space-5);
+  --section-overflow: var(--space-11);
+
+  /* Radii */
+  --radius-sm: 0.625rem;
+  --radius-md: 1rem;
+  --radius-lg: 1.5rem;
+  --radius-xl: 2rem;
+  --radius-pill: 999px;
+  --box-radius: var(--radius-md);
+
+  /* Elevation */
+  --shadow-soft: 0 0 0.75rem rgba(0, 0, 0, 0.1);
+  --shadow-medium: 0 0 0.75rem rgba(0, 0, 0, 0.4);
+  --shadow-hover: 1rem 0.5rem 0.75rem rgba(0, 0, 0, 0.4);
+  --shadow-lift: 0 4px 8px rgba(0, 0, 0, 0.2);
+  --shadow-rest: 0 0 10px rgba(0, 0, 0, 0);
+
+  /* Motion */
+  --ease-standard: ease;
+  --duration-fast: 150ms;
+  --duration-medium: 250ms;
+  --duration-slow: 300ms;
 }
 
 * {
@@ -27,6 +131,9 @@ html,
 body {
   max-width: 100vw;
   overflow-x: hidden;
+  background: var(--bg-page);
+  color: var(--text-primary);
+  font-family: var(--font-body);
 }
 
 a {

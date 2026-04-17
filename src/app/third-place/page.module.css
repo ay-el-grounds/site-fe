@@ -1,27 +1,28 @@
 .page {
   min-height: 100vh;
-  padding: 2rem;
+  padding: var(--space-8);
   background:
     radial-gradient(circle at top right, rgba(169, 203, 181, 0.45), transparent 28%),
-    linear-gradient(180deg, var(--minty) 0%, #e7e3bc 100%);
-  color: var(--onyx);
-  font-family: var(--ibm);
+    linear-gradient(180deg, var(--bg-page) 0%, #e7e3bc 100%);
+  color: var(--text-primary);
+  font-family: var(--font-body);
 }
 
 .actionBar {
   display: flex;
   justify-content: flex-end;
   gap: 0.75rem;
-  margin: 0 16px 1rem;
+  width: min(100%, calc(var(--max-width) + 14rem));
+  margin: 0 auto var(--space-4);
 }
 
 .actionButtonPrimary,
 .actionButtonSecondary {
   min-height: 44px;
   padding: 0.85rem 1.15rem;
-  border-radius: 999px;
+  border-radius: var(--radius-pill);
   border: 1px solid transparent;
-  font-family: var(--ibm);
+  font-family: var(--font-body);
   font-size: 0.78rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
@@ -29,25 +30,27 @@
 }
 
 .actionButtonPrimary {
-  background: var(--rojo);
-  color: var(--white);
+  background: var(--bg-accent);
+  color: var(--text-inverse);
 }
 
 .actionButtonSecondary {
   background: rgba(255, 255, 248, 0.78);
-  color: var(--onyx);
+  color: var(--text-primary);
   border-color: rgba(46, 52, 50, 0.12);
 }
 
 .printSurface {
   display: block;
+  width: min(100%, calc(var(--max-width) + 14rem));
+  margin: 0 auto;
 }
 
 .hero {
   display: grid;
   grid-template-columns: minmax(0, 1.6fr) minmax(260px, 0.8fr);
-  gap: 1rem;
-  margin-bottom: 1rem;
+  gap: var(--tile-gap);
+  margin-bottom: var(--space-4);
 }
 
 .heroIntro,
@@ -57,13 +60,13 @@
 .fundCard,
 .roadmapItem,
 .footerCard {
-  border-radius: 32px;
-  padding: 1.5rem;
-  box-shadow: 0 0 0 1px rgba(46, 52, 50, 0.08);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6);
+  box-shadow: 0 0 0 1px var(--border-soft);
 }
 
 .heroIntro {
-  background: var(--white);
+  background: var(--bg-surface);
 }
 
 .kicker,
@@ -76,7 +79,7 @@
 
 .kicker,
 .sectionLabel {
-  color: var(--rojo);
+  color: var(--text-accent);
 }
 
 .heroIntro h1 {
@@ -84,12 +87,12 @@
   font-size: clamp(3rem, 8vw, 6rem);
   line-height: 0.95;
   letter-spacing: -0.05em;
-  color: var(--rojo);
+  color: var(--text-accent);
 }
 
 .subtitle {
   max-width: 38rem;
-  margin-top: 1rem;
+  margin-top: var(--space-4);
   font-size: 1rem;
   line-height: 1.7;
   letter-spacing: -0.05em;
@@ -99,8 +102,8 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  background: var(--rojo);
-  color: var(--white);
+  background: var(--bg-accent);
+  color: var(--text-inverse);
 }
 
 .raiseLabel {
@@ -124,12 +127,12 @@
 .dealGrid,
 .stats {
   display: grid;
-  gap: 1rem;
+  gap: var(--tile-gap);
 }
 
 .storyGrid {
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  margin-bottom: 1rem;
+  margin-bottom: var(--space-4);
 }
 
 .panel {
@@ -138,7 +141,7 @@
 }
 
 .panelAccent {
-  background: var(--fresh);
+  background: var(--bg-surface-alt);
 }
 
 .panel h2,
@@ -160,12 +163,12 @@
 
 .stats {
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  margin-bottom: 1rem;
+  margin-bottom: var(--space-4);
 }
 
 .statCard {
-  background: var(--onyx);
-  color: var(--white);
+  background: var(--bg-surface-strong);
+  color: var(--text-inverse);
 }
 
 .statValue {
@@ -180,16 +183,16 @@
 }
 
 .dealBox {
-  margin-bottom: 1rem;
-  padding: 1.5rem;
-  border-radius: 32px;
+  margin-bottom: var(--space-4);
+  padding: var(--space-6);
+  border-radius: var(--radius-xl);
   background: linear-gradient(135deg, var(--lemon) 0%, #d8d65d 100%);
-  box-shadow: 0 0 0 1px rgba(46, 52, 50, 0.08);
+  box-shadow: 0 0 0 1px var(--border-soft);
 }
 
 .dealGrid {
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  margin-top: 1rem;
+  margin-top: var(--space-4);
   gap: 3rem;
 }
 
@@ -201,7 +204,7 @@
 
 .dealValue {
   font-size: clamp(1.8rem, 4vw, 3rem);
-  color: var(--rojo);
+  color: var(--text-accent);
   line-height: 1;
 }
 
@@ -215,11 +218,11 @@
 
 .fundsSection,
 .roadmapSection {
-  margin-bottom: 1rem;
+  margin-bottom: var(--space-4);
 }
 
 .sectionHeading {
-  margin-bottom: 1rem;
+  margin-bottom: var(--space-4);
 }
 
 .fundsGrid {
@@ -227,12 +230,12 @@
 }
 
 .fundCard {
-  background: var(--white);
+  background: var(--bg-surface);
 }
 
 .fundAmount {
   font-size: clamp(1.5rem, 3vw, 2.3rem);
-  color: var(--rojo);
+  color: var(--text-accent);
 }
 
 .fundLabel {
@@ -254,10 +257,10 @@
   justify-content: center;
   width: 3rem;
   height: 3rem;
-  border-radius: 999px;
-  background: var(--onyx);
-  color: var(--white);
-  margin-bottom: 1rem;
+  border-radius: var(--radius-pill);
+  background: var(--bg-surface-strong);
+  color: var(--text-inverse);
+  margin-bottom: var(--space-4);
 }
 
 .roadmapItem h3 {
@@ -272,7 +275,7 @@
 .tableWrapper {
   width: 100%;
   overflow-x: auto;
-  margin-top: 20px;
+  margin-top: var(--space-5);
 }
 
 .table {
@@ -290,7 +293,7 @@
 
 .table td {
   padding: 12px 10px;
-  border-bottom: 1px solid var(--gray-light);
+  border-bottom: 1px solid var(--border-soft);
 }
 
 .table tr:last-child td {
@@ -298,23 +301,23 @@
 }
 
 .tableNote {
-  margin-top: 16px;
+  margin-top: var(--tile-gap);
   font-size: 13px;
-  color: var(--gray);
+  color: var(--text-muted);
 }
 
 .footerCard {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 1rem;
-  margin-bottom: 1rem;
-  background: var(--white);
+  gap: var(--tile-gap);
+  margin-bottom: var(--space-4);
+  background: var(--bg-surface);
 }
 
 .contactName {
   font-size: 1.2rem;
   margin: 0.35rem 0;
-  color: var(--rojo);
+  color: var(--text-accent);
 }
 
 .footerNote {
@@ -340,12 +343,13 @@
 
 @media (max-width: 700px) {
   .page {
-    padding: 1rem;
+    padding: var(--space-4);
   }
 
   .actionBar {
     flex-direction: column;
-    margin: 0 0 1rem;
+    margin: 0 0 var(--space-4);
+    width: 100%;
   }
 
   .hero,
@@ -365,7 +369,7 @@
   .fundCard,
   .roadmapItem,
   .footerCard {
-    border-radius: 24px;
+    border-radius: var(--radius-lg);
   }
 }
 
@@ -377,8 +381,8 @@
 
   .page {
     padding: 0;
-    background: white;
-    color: var(--onyx);
+    background: var(--bg-surface);
+    color: var(--text-primary);
     print-color-adjust: exact;
     -webkit-print-color-adjust: exact;
   }

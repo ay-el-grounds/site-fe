@@ -8,7 +8,7 @@ export default function Backlog() {
   return (
     <>
       <main className={styles.main}>
-        <Navigation items={["email", "clutch", "caracter", "third-place"]} />
+        <Navigation items={["email", "read", "clutch", "caracter", "third-place"]} />
         <div className={`${styles.block} ${styles.copy}`}>
           <p className={`${styles.hero}`}>
             Aluminum Grounds maintains a countinuously updated list of

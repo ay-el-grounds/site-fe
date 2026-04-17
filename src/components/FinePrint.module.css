@@ -1,0 +1,17 @@
+.fineprint {
+  width: min(100%, var(--max-width));
+  margin: 5px auto 0;
+  padding: 0 var(--space-12) var(--space-4);
+  font-size: var(--text-2xs);
+  line-height: var(--leading-normal);
+}
+
+.fineprint a {
+  text-decoration: underline dashed 1px var(--text-primary);
+}
+
+@media (max-width: 700px) {
+  .fineprint {
+    padding: 0 var(--space-4) var(--space-4);
+  }
+}
