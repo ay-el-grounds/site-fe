@@ -132,7 +132,7 @@ export default function Image() {
                       gap: "12px",
                     }}
                   >
-                    by <img src="http://localhost:3000/SVG/lettermark.svg" alt="AG Logo" style={{ width: "108px", height: "28px" }} />
+                    by <img src="https://aluminumgrounds.co/SVG/lettermark.svg" alt="AG Logo" style={{ width: "108px", height: "28px" }} />
                   </div>
                 </div>
 
