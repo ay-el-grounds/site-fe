@@ -10,9 +10,8 @@
  * Response: { success: true, summary: MonitorSummary }
  *
  * Note: This can take several minutes to complete (30 accounts × network requests
- * × OpenAI calls). Vercel's default function timeout is 10s on Hobby / 60s on Pro.
- * For long runs, consider using Vercel's maxDuration config or running via cron
- * with the standalone script instead.
+ * × OpenAI calls). Vercel Hobby allows maxDuration up to 60 seconds, so long
+ * monitor runs may need to use the standalone script instead.
  */
 
 import { NextRequest, NextResponse } from "next/server";
@@ -52,6 +51,6 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// Extend the function timeout for this route (Vercel Pro allows up to 300s)
+// Hobby-compatible ceiling. Longer monitor runs should use the standalone script.
 // See: https://vercel.com/docs/functions/runtimes#max-duration
-export const maxDuration = 300;
+export const maxDuration = 60;

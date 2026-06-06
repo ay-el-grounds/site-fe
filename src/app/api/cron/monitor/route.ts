@@ -15,8 +15,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { runMonitor } from "@/lib/instagram-monitor";
 
-// Allow up to 300 seconds (Vercel Pro required for > 10s)
-export const maxDuration = 300;
+// Hobby-compatible ceiling. Longer monitor runs should use the standalone script.
+export const maxDuration = 60;
 
 export async function GET(request: NextRequest) {
   // Verify Vercel's injected authorization header
