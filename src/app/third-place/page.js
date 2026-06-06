@@ -62,7 +62,7 @@ export default async function ThirdPlacePage({ searchParams }) {
   return (
     <main className={styles.page}>
       <div className={styles.noPrint}>
-        <Navigation items={["email", "read", "backlog", "clutch", "caracter"]} />
+        <Navigation items={["email", "read", "backlog", "clutch", "turnout", "caracter"]} />
       </div>
 
       <ThirdPlaceActions

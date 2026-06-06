@@ -10,6 +10,7 @@ const DEFAULT_ITEMS = [
   "read",
   "backlog",
   "clutch",
+  "turnout",
   "caracter",
   "third-place",
 ];
@@ -88,6 +89,37 @@ const navItems = {
       >
         <rect x="0" width="20" height="20" fill="none" />
         <path d="M1 3.17V18h18V4H8v-.83c0-.32-.12-.6-.35-.83S7.14 2 6.82 2H2.18c-.33 0-.6.11-.83.34-.24.23-.35.51-.35.83zM10 6v2H3V6h7zm7 0v10h-5V6h5zm-7 4v2H3v-2h7zm0 4v2H3v-2h7z" />
+      </svg>
+    ),
+  },
+  turnout: {
+    href: "/turnout",
+    label: "Turnout",
+    icon: (
+      <svg
+        width="16"
+        height="16"
+        viewBox="0 0 16 16"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M3 2.5H13C13.8284 2.5 14.5 3.17157 14.5 4V13C14.5 13.8284 13.8284 14.5 13 14.5H3C2.17157 14.5 1.5 13.8284 1.5 13V4C1.5 3.17157 2.17157 2.5 3 2.5Z"
+          stroke="currentColor"
+          strokeWidth="1.5"
+        />
+        <path
+          d="M4.5 1.5V4.5M11.5 1.5V4.5M2 6.5H14"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+        />
+        <path
+          d="M4.5 9H5.5M7.5 9H8.5M10.5 9H11.5M4.5 12H5.5M7.5 12H8.5"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+        />
       </svg>
     ),
   },
