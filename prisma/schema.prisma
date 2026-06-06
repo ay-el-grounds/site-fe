@@ -1,0 +1,75 @@
+// Prisma schema for Turnout
+// Database: Neon (serverless Postgres)
+// Supports: event storage, Instagram account monitoring, scrape logging
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  // directUrl is required for Neon — avoids connection pooler for migrations
+  directUrl = env("DIRECT_URL")
+}
+
+// ------------------------------------------------------------------
+// WatchedAccount — Instagram accounts we monitor for car meet posts
+// ------------------------------------------------------------------
+model WatchedAccount {
+  id            String    @id @default(cuid())
+  handle        String    @unique // Instagram handle without the @ symbol
+  displayName   String?
+  isActive      Boolean   @default(true)
+  lastCheckedAt DateTime?
+  createdAt     DateTime  @default(now())
+
+  @@map("watched_accounts")
+}
+
+// ------------------------------------------------------------------
+// Event — a single automotive event (from Instagram or user submission)
+// ------------------------------------------------------------------
+model Event {
+  id                String   @id @default(cuid())
+  title             String
+  description       String?
+  date              DateTime // Start date/time of the event
+  endTime           DateTime?
+  venue             String
+  address           String?
+  city              String
+  state             String   // 2-letter state code: NY, NJ, CT, MA, RI, PA, VT, NH, ME
+  categories        String[] // e.g. ["EXOTIC", "EUROPEAN"] — from the Turnout category taxonomy
+  ticketUrl         String?
+  imageUrl          String?
+  instagramPostUrl  String?  // Source Instagram post URL — used for deduplication
+  sourceAccount     String?  // The @handle this event was extracted from
+  status            String   @default("approved") // "approved" | "pending" | "rejected"
+
+  // User-submitted event fields
+  submittedByName   String?
+  submittedByEmail  String?
+  verificationLink  String?  // Link to verify the event (social post, website, etc.)
+  isUserSubmitted   Boolean  @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("events")
+}
+
+// ------------------------------------------------------------------
+// ScrapeLog — audit log of each monitor run per account
+// ------------------------------------------------------------------
+model ScrapeLog {
+  id            String   @id @default(cuid())
+  accountHandle String   // Which Instagram handle was checked
+  postsChecked  Int
+  eventsFound   Int
+  eventsAdded   Int
+  errors        String?  // Serialized error messages if any occurred
+  runAt         DateTime @default(now())
+
+  @@map("scrape_logs")
+}

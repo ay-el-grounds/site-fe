@@ -6,7 +6,12 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint . --ext .js,.jsx,.mjs"
+    "lint": "eslint . --ext .js,.jsx,.mjs",
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push",
+    "db:migrate": "prisma migrate dev",
+    "db:seed": "tsx prisma/seed.ts",
+    "monitor": "tsx scripts/run-monitor.ts"
   },
   "dependencies": {
     "@farcaster/frame-sdk": "^0.0.31",
@@ -15,20 +20,29 @@
     "@next/mdx": "^16.2.4",
     "@svgr/webpack": "^8.1.0",
     "@types/mdx": "^2.0.13",
+    "@prisma/client": "^5.14.0",
     "axios": "^1.7.2",
     "chrome-aws-lambda": "^10.1.0",
+    "dotenv": "^16.4.5",
     "google-charts": "^2.0.0",
     "gray-matter": "^4.0.3",
     "loader": "^2.1.1",
     "next": "15.5.9",
     "next-api-og-image": "^4.3.0",
+    "openai": "^4.52.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
-    "remark-frontmatter": "^5.0.0"
+    "remark-frontmatter": "^5.0.0",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/react": "19.1.13",
     "eslint": "^9.35.0",
-    "eslint-config-next": "15.5.9"
+    "eslint-config-next": "15.5.9",
+    "prisma": "^5.14.0",
+    "tsx": "^4.15.0"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
   }
 }

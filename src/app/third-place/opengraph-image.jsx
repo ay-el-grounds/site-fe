@@ -132,7 +132,16 @@ export default function Image() {
                       gap: "12px",
                     }}
                   >
-                    by <img src="https://aluminumgrounds.co/SVG/lettermark.svg" alt="AG Logo" style={{ width: "108px", height: "28px" }} />
+                    by{" "}
+                    <span
+                      style={{
+                        display: "flex",
+                        fontWeight: 800,
+                        color: colors.charcoal,
+                      }}
+                    >
+                      Aluminum Grounds
+                    </span>
                   </div>
                 </div>
 
