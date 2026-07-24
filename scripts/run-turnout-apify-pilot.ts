@@ -10,15 +10,28 @@ const PILOT_HANDLES = [
   "retromobile_nyc",
   "limerockpark",
 ];
+const WEBHOOK_URL =
+  process.env.TURNOUT_WEBHOOK_URL ??
+  "https://www.aluminumgrounds.co/api/webhooks/apify";
+const TERMINAL_RETRIEVAL_STATUSES = new Set([
+  "RETRIEVED",
+  "PROCESSING",
+  "COMPLETED",
+  "PARTIAL",
+  "FAILED",
+]);
 
 async function main() {
-  const [{ default: prisma }, { ApifyClient }, { startMonitorRun }, ingestion, classification] =
+  const webhookSecret = process.env.APIFY_WEBHOOK_SECRET;
+  if (!webhookSecret) {
+    throw new Error("APIFY_WEBHOOK_SECRET is not configured in .env.local");
+  }
+
+  const [{ default: prisma }, { ApifyClient }, { startMonitorRun }] =
     await Promise.all([
       import("../src/lib/prisma"),
       import("../src/lib/turnout/apify-client"),
       import("../src/lib/turnout/start-monitor-run"),
-      import("../src/lib/turnout/ingest-apify-run"),
-      import("../src/lib/turnout/classify-pending"),
     ]);
 
   const provider = new ApifyClient(process.env.APIFY_API_TOKEN ?? "");
@@ -27,6 +40,10 @@ async function main() {
     provider,
     handles: PILOT_HANDLES,
     trigger: "MANUAL",
+    webhook: {
+      requestUrl: WEBHOOK_URL,
+      secret: webhookSecret,
+    },
   });
   console.log("[Turnout pilot] Started:", started);
 
@@ -35,22 +52,14 @@ async function main() {
     `[Turnout pilot] Apify run ${providerRun.id} finished with ${providerRun.status}`
   );
 
-  const ingested = await ingestion.ingestApifyRun({
-    prisma,
-    provider,
-    callbackRunId: started.externalRunId,
-  });
-  console.log("[Turnout pilot] Ingestion:", ingested);
+  await waitForRemoteWebhook(prisma, started.runId);
+  console.log("[Turnout pilot] Deployed webhook ingestion completed.");
 
-  const classified =
-    ingested.status === "FAILED"
-      ? null
-      : await classification.classifyPendingPosts({
-          prisma,
-          runId: started.runId,
-          limit: 3,
-        });
-  console.log("[Turnout pilot] Classification:", classified);
+  const replayResponses = await Promise.all([
+    replayWebhook(started.externalRunId, webhookSecret),
+    replayWebhook(started.externalRunId, webhookSecret),
+  ]);
+  console.log("[Turnout pilot] Remote replay responses:", replayResponses);
 
   const verified = await prisma.monitorRun.findUniqueOrThrow({
     where: { id: started.runId },
@@ -105,6 +114,68 @@ async function main() {
       2
     )
   );
+}
+
+async function waitForRemoteWebhook(
+  prisma: Awaited<typeof import("../src/lib/prisma")>["default"],
+  runId: string
+): Promise<void> {
+  const timeoutAt = Date.now() + 2 * 60 * 1000;
+  let stableSince = 0;
+  let lastSignature = "";
+
+  while (Date.now() < timeoutAt) {
+    const run = await prisma.monitorRun.findUniqueOrThrow({
+      where: { id: runId },
+      select: {
+        status: true,
+        externalDatasetId: true,
+        postsProcessed: true,
+        eventsCreated: true,
+        updatedAt: true,
+      },
+    });
+    const signature = JSON.stringify(run);
+
+    if (
+      TERMINAL_RETRIEVAL_STATUSES.has(run.status) &&
+      run.externalDatasetId &&
+      signature === lastSignature
+    ) {
+      if (!stableSince) stableSince = Date.now();
+      if (Date.now() - stableSince >= 15_000) return;
+    } else {
+      stableSince = 0;
+    }
+
+    lastSignature = signature;
+    await sleep(3_000);
+  }
+
+  throw new Error("Timed out waiting for the deployed webhook to settle");
+}
+
+async function replayWebhook(actorRunId: string, secret: string) {
+  const response = await fetch(WEBHOOK_URL, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${secret}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      eventType: "ACTOR.RUN.SUCCEEDED",
+      eventData: { actorRunId },
+      resource: { id: actorRunId },
+    }),
+  });
+  return {
+    status: response.status,
+    body: await response.json(),
+  };
+}
+
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 main()

@@ -321,6 +321,7 @@ Rules:
 - If no ticket URL is mentioned, set ticketUrl to null
 - If address is not mentioned, set address to null
 - state must be the 2-letter abbreviation (e.g. "NY", "CT")
+- Resolve relative weekdays such as "this Sunday" from the post timestamp, then verify the ISO date actually falls on that weekday.
 - If venue, city, or state cannot be confidently determined from the caption, return isEvent: false. Do not use "TBD" as a value.
 - Do not extract ticket sale announcements, giveaways, sponsorship posts, or recap posts about past events — only extract actual upcoming event occurrences with a specific future date and location.
 
@@ -385,16 +386,24 @@ ${post.caption}`;
       return null;
     }
 
+    const resolvedDate = resolveRelativeWeekdayDate(
+      data.date,
+      post.caption,
+      post.timestamp
+    );
+
     return {
       title: data.title,
       description: data.description ?? null,
-      date: data.date,
+      date: resolvedDate,
       endTime: data.endTime ?? null,
       venue: data.venue,
       address: data.address ?? null,
       city: data.city,
       state: data.state.toUpperCase(),
-      categories: (data.categories ?? ["GENERAL"]) as Category[],
+      categories: (
+        data.categories?.length ? data.categories : ["GENERAL"]
+      ) as Category[],
       ticketUrl: data.ticketUrl ?? null,
     };
   } catch (err) {
@@ -405,6 +414,45 @@ ${post.caption}`;
     if (options.throwOnProviderError) throw err;
     return null;
   }
+}
+
+export function resolveRelativeWeekdayDate(
+  extractedDate: string,
+  caption: string,
+  postTimestamp: string
+): string {
+  const relativeWeekday = caption.match(
+    /\b(?:this|next)\s+(sunday|monday|tuesday|wednesday|thursday|friday|saturday)\b/i
+  );
+  if (!relativeWeekday) return extractedDate;
+
+  const weekdays = [
+    "sunday",
+    "monday",
+    "tuesday",
+    "wednesday",
+    "thursday",
+    "friday",
+    "saturday",
+  ];
+  const targetWeekday = weekdays.indexOf(relativeWeekday[1].toLowerCase());
+  const postDate = new Date(postTimestamp);
+  if (targetWeekday < 0 || Number.isNaN(postDate.getTime())) {
+    return extractedDate;
+  }
+
+  const expectedDate = new Date(postDate);
+  const daysAhead = (targetWeekday - postDate.getUTCDay() + 7) % 7;
+  expectedDate.setUTCDate(expectedDate.getUTCDate() + daysAhead);
+  const expectedDay = expectedDate.toISOString().slice(0, 10);
+  const extractedDay = extractedDate.slice(0, 10);
+
+  if (extractedDay === expectedDay) return extractedDate;
+
+  console.warn(
+    `[instagram-monitor] Corrected relative weekday date from ${extractedDay} to ${expectedDay}`
+  );
+  return `${expectedDay}${extractedDate.slice(10)}`;
 }
 
 /**
