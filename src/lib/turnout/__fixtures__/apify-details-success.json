@@ -1,0 +1,38 @@
+[
+  {
+    "inputUrl": "https://www.instagram.com/turnout_fixture/",
+    "username": "turnout_fixture",
+    "id": "10001",
+    "private": false,
+    "postsCount": 42,
+    "latestPosts": [
+      {
+        "id": "20001",
+        "shortCode": "FixturePostA",
+        "url": "https://www.instagram.com/p/FixturePostA/",
+        "caption": "Fixture caption for an upcoming automotive gathering.",
+        "timestamp": "2026-07-23T18:00:00.000Z",
+        "ownerUsername": "turnout_fixture",
+        "displayUrl": "https://example.com/fixture-post-a.jpg",
+        "images": [],
+        "childPosts": [],
+        "type": "Image",
+        "productType": "feed"
+      },
+      {
+        "id": "20002",
+        "shortCode": "FixtureReelB",
+        "url": "https://www.instagram.com/p/FixtureReelB/",
+        "caption": "Fixture reel caption.",
+        "timestamp": "2026-07-22T14:00:00.000Z",
+        "ownerUsername": "fixture_collaborator",
+        "displayUrl": "https://example.com/fixture-reel-b.jpg",
+        "images": [],
+        "childPosts": [],
+        "type": "Video",
+        "productType": "clips",
+        "videoUrl": "https://example.com/fixture-reel-b.mp4"
+      }
+    ]
+  }
+]

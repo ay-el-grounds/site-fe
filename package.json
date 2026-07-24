@@ -11,7 +11,9 @@
     "db:push": "prisma db push",
     "db:migrate": "prisma migrate dev",
     "db:seed": "tsx prisma/seed.ts",
-    "monitor": "tsx scripts/run-monitor.ts"
+    "monitor": "tsx scripts/run-monitor.ts",
+    "monitor:pilot": "tsx scripts/run-turnout-apify-pilot.ts",
+    "test:turnout": "node --import tsx --test src/lib/turnout/*.test.ts"
   },
   "dependencies": {
     "@farcaster/frame-sdk": "^0.0.31",

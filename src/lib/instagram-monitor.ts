@@ -295,7 +295,8 @@ export async function monitorAccount(handle: string): Promise<RawPost[]> {
  */
 export async function extractEventFromPost(
   post: RawPost,
-  handle: string
+  handle: string,
+  options: { throwOnProviderError?: boolean } = {}
 ): Promise<ExtractedEvent | null> {
   if (!post.caption || post.caption.trim().length < 20) {
     // Too short to contain meaningful event info
@@ -401,6 +402,7 @@ ${post.caption}`;
       `[instagram-monitor] OpenAI extraction failed for post ${post.id}:`,
       err
     );
+    if (options.throwOnProviderError) throw err;
     return null;
   }
 }

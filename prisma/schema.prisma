@@ -17,46 +17,198 @@ datasource db {
 // WatchedAccount — Instagram accounts we monitor for car meet posts
 // ------------------------------------------------------------------
 model WatchedAccount {
-  id            String    @id @default(cuid())
-  handle        String    @unique // Instagram handle without the @ symbol
-  displayName   String?
-  isActive      Boolean   @default(true)
-  lastCheckedAt DateTime?
-  createdAt     DateTime  @default(now())
+  id                  String    @id @default(cuid())
+  handle              String    @unique // Instagram handle without the @ symbol
+  displayName         String?
+  isActive            Boolean   @default(true)
+  lastCheckedAt       DateTime? // Legacy direct-monitor cursor
+  lastAttemptedAt     DateTime?
+  lastRetrievedAt     DateTime?
+  lastProcessedAt     DateTime?
+  nextAttemptAt       DateTime?
+  consecutiveFailures Int       @default(0)
+  retrievalStatus     String?
+  lastRetrievalError  String?
+  providerAccountId   String?
+  createdAt           DateTime  @default(now())
 
+  monitorRunAccounts MonitorRunAccount[]
+  instagramPosts     InstagramPost[]
+
+  @@index([nextAttemptAt])
   @@map("watched_accounts")
+}
+
+enum MonitorRunStatus {
+  PENDING
+  RETRIEVING
+  RETRIEVED
+  PROCESSING
+  COMPLETED
+  PARTIAL
+  FAILED
+}
+
+enum MonitorRunTrigger {
+  SCHEDULED
+  MANUAL
+  RECONCILIATION
+  HISTORICAL_BACKFILL
+}
+
+enum MonitorRunAccountStatus {
+  PENDING
+  RETRIEVED
+  EMPTY
+  FALLBACK_REQUIRED
+  NOT_FOUND
+  PRIVATE
+  FAILED
+}
+
+enum MonitorRetrievalSource {
+  DETAILS_PRIMARY
+  POSTS_FALLBACK
+  HISTORICAL_BACKFILL
+}
+
+enum InstagramPostProcessingStatus {
+  PENDING
+  PROCESSING
+  NON_EVENT
+  EVENT_CREATED
+  RETRYABLE_ERROR
+  PERMANENT_ERROR
+}
+
+// ------------------------------------------------------------------
+// MonitorRun — durable state for one provider retrieval workflow
+// ------------------------------------------------------------------
+model MonitorRun {
+  id                    String            @id @default(cuid())
+  status                MonitorRunStatus  @default(PENDING)
+  trigger               MonitorRunTrigger @default(SCHEDULED)
+  provider              String            @default("apify")
+  externalRunId         String?           @unique
+  externalDatasetId     String?
+  providerSchemaVersion String?
+  retrievalWindowStart  DateTime
+  retrievalWindowEnd    DateTime
+  accountsRequested     Int
+  accountsRetrieved     Int               @default(0)
+  postsRetrieved        Int               @default(0)
+  postsProcessed        Int               @default(0)
+  eventsCreated         Int               @default(0)
+  errorSummary          String?
+  startedAt             DateTime          @default(now())
+  retrievedAt           DateTime?
+  completedAt           DateTime?
+  createdAt             DateTime          @default(now())
+  updatedAt             DateTime          @updatedAt
+
+  accounts MonitorRunAccount[]
+
+  @@index([status, createdAt])
+  @@index([externalDatasetId])
+  @@map("monitor_runs")
+}
+
+// ------------------------------------------------------------------
+// MonitorRunAccount — per-account outcome within a provider batch
+// ------------------------------------------------------------------
+model MonitorRunAccount {
+  id                String                  @id @default(cuid())
+  runId             String
+  accountId         String
+  status            MonitorRunAccountStatus @default(PENDING)
+  retrievalSource   MonitorRetrievalSource  @default(DETAILS_PRIMARY)
+  providerInputUrl  String
+  providerAccountId String?
+  postsRetrieved    Int                     @default(0)
+  needsFallback     Boolean                 @default(false)
+  fallbackReason    String?
+  errorCode         String?
+  errorMessage      String?
+  startedAt         DateTime                @default(now())
+  completedAt       DateTime?
+
+  run     MonitorRun     @relation(fields: [runId], references: [id], onDelete: Cascade)
+  account WatchedAccount @relation(fields: [accountId], references: [id], onDelete: Restrict)
+
+  @@unique([runId, accountId])
+  @@index([runId, status])
+  @@index([accountId, startedAt])
+  @@map("monitor_run_accounts")
 }
 
 // ------------------------------------------------------------------
 // Event — a single automotive event (from Instagram or user submission)
 // ------------------------------------------------------------------
 model Event {
-  id                String   @id @default(cuid())
-  title             String
-  description       String?
-  date              DateTime // Start date/time of the event
-  endTime           DateTime?
-  venue             String
-  address           String?
-  city              String
-  state             String   // 2-letter state code: NY, NJ, CT, MA, RI, PA, VT, NH, ME
-  categories        String[] // e.g. ["EXOTIC", "EUROPEAN"] — from the Turnout category taxonomy
-  ticketUrl         String?
-  imageUrl          String?
-  instagramPostUrl  String?  // Source Instagram post URL — used for deduplication
-  sourceAccount     String?  // The @handle this event was extracted from
-  status            String   @default("approved") // "approved" | "pending" | "rejected"
+  id               String    @id @default(cuid())
+  title            String
+  description      String?
+  date             DateTime // Start date/time of the event
+  endTime          DateTime?
+  venue            String
+  address          String?
+  city             String
+  state            String // 2-letter state code: NY, NJ, CT, MA, RI, PA, VT, NH, ME
+  categories       String[] // e.g. ["EXOTIC", "EUROPEAN"] — from the Turnout category taxonomy
+  ticketUrl        String?
+  imageUrl         String?
+  instagramPostUrl String? // Source Instagram post URL — used for deduplication
+  sourceAccount    String? // The @handle this event was extracted from
+  status           String    @default("approved") // "approved" | "pending" | "rejected"
 
   // User-submitted event fields
-  submittedByName   String?
-  submittedByEmail  String?
-  verificationLink  String?  // Link to verify the event (social post, website, etc.)
-  isUserSubmitted   Boolean  @default(false)
+  submittedByName  String?
+  submittedByEmail String?
+  verificationLink String? // Link to verify the event (social post, website, etc.)
+  isUserSubmitted  Boolean @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  instagramPost InstagramPost?
+
   @@map("events")
+}
+
+// ------------------------------------------------------------------
+// InstagramPost — durable, idempotent input to event classification
+// ------------------------------------------------------------------
+model InstagramPost {
+  id                       String                        @id @default(cuid())
+  accountId                String
+  providerPostId           String?
+  shortcode                String
+  canonicalUrl             String
+  caption                  String?
+  publishedAt              DateTime?
+  mediaUrl                 String?
+  media                    Json?
+  providerSchemaVersion    String
+  providerDatasetId        String?
+  processingStatus         InstagramPostProcessingStatus @default(PENDING)
+  classifierVersion        String?
+  classification           Json?
+  processingAttempts       Int                           @default(0)
+  lastProcessingError      String?
+  processingLeaseId        String?
+  processingLeaseExpiresAt DateTime?
+  eventId                  String?                       @unique
+  firstRetrievedAt         DateTime                      @default(now())
+  lastRetrievedAt          DateTime                      @updatedAt
+
+  account WatchedAccount @relation(fields: [accountId], references: [id], onDelete: Restrict)
+  event   Event?         @relation(fields: [eventId], references: [id], onDelete: SetNull)
+
+  @@unique([accountId, shortcode])
+  @@index([processingStatus])
+  @@index([processingLeaseExpiresAt])
+  @@index([publishedAt])
+  @@map("instagram_posts")
 }
 
 // ------------------------------------------------------------------
@@ -64,11 +216,11 @@ model Event {
 // ------------------------------------------------------------------
 model ScrapeLog {
   id            String   @id @default(cuid())
-  accountHandle String   // Which Instagram handle was checked
+  accountHandle String // Which Instagram handle was checked
   postsChecked  Int
   eventsFound   Int
   eventsAdded   Int
-  errors        String?  // Serialized error messages if any occurred
+  errors        String? // Serialized error messages if any occurred
   runAt         DateTime @default(now())
 
   @@map("scrape_logs")
