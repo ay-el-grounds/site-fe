@@ -26,11 +26,13 @@ const dateFormatter = new Intl.DateTimeFormat("en-US", {
   month: "long",
   day: "numeric",
   year: "numeric",
+  timeZone: "America/New_York",
 });
 
 const timeFormatter = new Intl.DateTimeFormat("en-US", {
   hour: "numeric",
   minute: "2-digit",
+  timeZone: "America/New_York",
 });
 
 async function getEvent(id: string) {

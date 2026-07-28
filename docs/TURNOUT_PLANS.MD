@@ -510,6 +510,8 @@ CRON_SECRET
   Open House caption's 10:30 AM start.
 - Normalized all seven retained event timestamps from Eastern wall time to UTC
   for correct frontend and calendar display.
+- Pinned Turnout list, calendar, and detail formatting to
+  `America/New_York` so server and browser rendering agree.
 - Added deterministic explicit-date precedence, `America/New_York` parsing for
   offset-free event times, and title normalization for duplicate variants such
   as NYC/New York.

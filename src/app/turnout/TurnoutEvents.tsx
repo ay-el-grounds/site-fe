@@ -27,45 +27,59 @@ const weekDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const monthFormatter = new Intl.DateTimeFormat("en-US", {
   month: "long",
   year: "numeric",
+  timeZone: "America/New_York",
 });
 
 const dateFormatter = new Intl.DateTimeFormat("en-US", {
   weekday: "short",
   month: "short",
   day: "numeric",
+  timeZone: "America/New_York",
 });
 
 const timeFormatter = new Intl.DateTimeFormat("en-US", {
   hour: "numeric",
   minute: "2-digit",
+  timeZone: "America/New_York",
+});
+
+const calendarKeyFormatter = new Intl.DateTimeFormat("en-US", {
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+  timeZone: "America/New_York",
 });
 
 type ViewMode = "list" | "calendar";
 
 function getMonthKey(value: string) {
-  const date = new Date(value);
-  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
+  return getZonedDateParts(value).slice(0, 2).join("-");
 }
 
 function getDayKey(value: string) {
-  const date = new Date(value);
-  return [
-    date.getFullYear(),
-    String(date.getMonth() + 1).padStart(2, "0"),
-    String(date.getDate()).padStart(2, "0"),
-  ].join("-");
+  return getZonedDateParts(value).join("-");
+}
+
+function getZonedDateParts(value: string) {
+  const parts = Object.fromEntries(
+    calendarKeyFormatter
+      .formatToParts(new Date(value))
+      .filter((part) => part.type !== "literal")
+      .map((part) => [part.type, part.value])
+  );
+  return [parts.year, parts.month, parts.day];
 }
 
 function getMonthLabel(key: string) {
   const [year, monthIndex] = key.split("-").map(Number);
-  return monthFormatter.format(new Date(year, monthIndex - 1, 1));
+  return monthFormatter.format(new Date(Date.UTC(year, monthIndex - 1, 15, 12)));
 }
 
 function getCalendarDays(monthKey: string) {
   const [year, monthIndex] = monthKey.split("-").map(Number);
-  const firstDay = new Date(year, monthIndex - 1, 1);
-  const daysInMonth = new Date(year, monthIndex, 0).getDate();
-  const leadingDays = firstDay.getDay();
+  const firstDay = new Date(Date.UTC(year, monthIndex - 1, 1));
+  const daysInMonth = new Date(Date.UTC(year, monthIndex, 0)).getUTCDate();
+  const leadingDays = firstDay.getUTCDay();
   const cells: Array<{ day: number | null; key: string }> = [];
 
   for (let index = 0; index < leadingDays; index += 1) {
