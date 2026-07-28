@@ -176,7 +176,7 @@ Remote pilot:
 
 ## Gate 5: Reconciliation
 
-Status: Implemented and verified locally; deployment is intentionally dormant
+Status: Deployed and intentionally dormant
 
 Reconciliation should be implemented as a reusable service first, then exposed
 through a manually invoked admin route. It should not be registered in
@@ -482,6 +482,8 @@ CRON_SECRET
 - Passed all 28 Turnout tests against Neon with fake Apify and classifier
   providers.
 - Passed TypeScript and the Next.js production build.
+- Deployed the dormant reconciliation endpoint in commit `49604e1`; the Vercel
+  production status completed successfully.
 - Left `vercel.json` and the legacy daily cron unchanged.
 - Stopped before invoking reconciliation against the live backlog, starting a
   full 32-account run, or replacing the cron.
