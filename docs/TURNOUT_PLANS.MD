@@ -383,16 +383,18 @@ Status: Complete
 
 ### Gate 7: Full 32-Account Manual Batch
 
-Status: Pending
+Status: Complete
 
-- Start one details batch for all active accounts.
-- Verify 32 explainable account outcomes.
-- Verify expected Apify cost.
-- Verify fallback frequency and cost.
-- Drain all eligible classifications.
-- Review created events.
-- Replay provider callbacks.
-- Confirm no duplicate events or posts.
+- Started one details batch for all 32 active accounts.
+- Persisted 32 explainable account outcomes.
+- Recorded primary and fallback Apify costs.
+- Resolved all 11 fallback requirements through one posts batch.
+- Drained all classifications eligible to the 30-day retrieval window.
+- Reviewed every generated event against its source caption.
+- Replayed the production callback twice with stable counters.
+- Confirmed no duplicate events or posts.
+- Added deterministic caption date-evidence validation after the production
+  review exposed model-inferred dates.
 
 ### Gate 8: Cron Replacement
 
@@ -518,6 +520,46 @@ CRON_SECRET
 - Bumped the classifier audit version to `turnout-gpt4o-mini-v2`.
 - Passed all 32 Turnout tests against Neon and the Next.js production build.
 - Left the full 32-account run and legacy cron unchanged for Gate 7.
+
+### 2026-07-28 - Full 32-account production batch
+
+- Commit: Gate 7 activation changeset (see Git history)
+- Deployment: Pending for the classifier safeguard; the existing production
+  webhook and reconciliation routes handled the run successfully.
+- Turnout run: `cms4rwrln00003dnwfb842im1`
+- Provider run: `FVodvYXhn0kfk8CGJ`
+- Dataset: `kHUlRJinzIceeeXyM`
+- Submitted all 32 active accounts with a 30-day recovery window.
+- The details batch completed in 29 seconds for $0.0864 and persisted all 32
+  account outcomes: 12 retrieved, four empty, 11 fallback-required, and five
+  provider not-found responses.
+- Replayed the completed production callback twice. Both requests returned
+  `already_ingested`; account outcomes, post counts, event counts, run
+  timestamps, and classification counters remained unchanged.
+- Started one 11-account posts fallback:
+  `cms4sbhku000513fzpbxd8tet` / `I8T6DnmjN4v9cPAsI` /
+  `18zxxCluqGOhaqJcF`.
+- The fallback completed in 37 seconds for $0.2484, returned 91 rows, added two
+  net-new durable posts after overlap deduplication, and cleared every fallback
+  requirement.
+- Total Apify cost for the full gate was $0.3348.
+- The details and fallback runs processed 118 eligible durable posts. All
+  eligible posts reached a terminal classification state.
+- GPT created 11 event candidates. Source review retained Summer Auto Show,
+  Vox Pop - The Car Show, and Corvette Car Show; eight unsupported
+  sponsorship, promotion, recap, or inferred-date rows were removed while
+  their source posts were retained as terminal non-events.
+- Added deterministic caption date-evidence validation before OpenAI
+  classification and tightened the prompt. Captions must now contain an
+  explicit calendar date or an unambiguous relative date.
+- Bumped the classifier audit version to `turnout-gpt4o-mini-v3`.
+- Passed all 34 Turnout tests, including 14 Neon-backed transaction and
+  reconciliation tests, and passed the Next.js production build.
+- Final production state: 32 active accounts, five durable monitor runs, 293
+  posts, 21 events, zero active runs, zero unresolved fallbacks, zero expired
+  leases, zero test accounts, and zero event duplicates.
+- Preserved 119 older pending posts outside the Gate 7 retrieval window.
+- Gate 7 is complete. The legacy daily cron remains unchanged pending Gate 8.
 
 ## Log Template
 

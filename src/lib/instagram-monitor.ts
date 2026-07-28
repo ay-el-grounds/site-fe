@@ -302,6 +302,9 @@ export async function extractEventFromPost(
     // Too short to contain meaningful event info
     return null;
   }
+  if (!hasSpecificEventDateEvidence(post.caption)) {
+    return null;
+  }
 
   const openai = getOpenAI();
 
@@ -322,6 +325,7 @@ Rules:
 - If address is not mentioned, set address to null
 - state must be the 2-letter abbreviation (e.g. "NY", "CT")
 - Resolve relative weekdays such as "this Sunday" from the post timestamp, then verify the ISO date actually falls on that weekday.
+- The caption itself must state a specific calendar date or an unambiguous relative date such as "this Sunday" or "tomorrow". Never infer a day from a month, season, event name, account identity, or outside knowledge.
 - If venue, city, or state cannot be confidently determined from the caption, return isEvent: false. Do not use "TBD" as a value.
 - Do not extract ticket sale announcements, giveaways, sponsorship posts, or recap posts about past events — only extract actual upcoming event occurrences with a specific future date and location.
 
@@ -414,6 +418,33 @@ ${post.caption}`;
     if (options.throwOnProviderError) throw err;
     return null;
   }
+}
+
+const MONTH_PATTERN =
+  "(?:jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|jun(?:e)?|jul(?:y)?|aug(?:ust)?|sep(?:t(?:ember)?)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?)";
+const WEEKDAY_PATTERN =
+  "(?:mon(?:day)?|tue(?:s(?:day)?)?|wed(?:nesday)?|thu(?:rs(?:day)?)?|fri(?:day)?|sat(?:urday)?|sun(?:day)?)";
+
+export function hasSpecificEventDateEvidence(caption: string): boolean {
+  const patterns = [
+    new RegExp(
+      `\\b${MONTH_PATTERN}\\.?\\s+\\d{1,2}(?:st|nd|rd|th)?\\b`,
+      "i"
+    ),
+    new RegExp(
+      `\\b\\d{1,2}(?:st|nd|rd|th)?\\s+(?:of\\s+)?${MONTH_PATTERN}\\b`,
+      "i"
+    ),
+    /\b(?:19|20)\d{2}-\d{1,2}-\d{1,2}\b/,
+    /\b(?:0?[1-9]|1[0-2])[./-](?:0?[1-9]|[12]\d|3[01])(?:[./-](?:\d{2}|\d{4}))?\b/,
+    new RegExp(
+      `\\b(?:this|next|coming)\\s+${WEEKDAY_PATTERN}\\b`,
+      "i"
+    ),
+    /\b(?:today|tomorrow|tonight)\b/i,
+  ];
+
+  return patterns.some((pattern) => pattern.test(caption));
 }
 
 export function resolveRelativeWeekdayDate(

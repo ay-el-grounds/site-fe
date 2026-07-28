@@ -12,7 +12,7 @@ import {
   type RawPost,
 } from "@/lib/instagram-monitor";
 
-const CLASSIFIER_VERSION = "turnout-gpt4o-mini-v2";
+const CLASSIFIER_VERSION = "turnout-gpt4o-mini-v3";
 const DEFAULT_BATCH_SIZE = 3;
 const MAX_ATTEMPTS = 3;
 const LEASE_MINUTES = 10;
