@@ -523,8 +523,8 @@ CRON_SECRET
 
 ### 2026-07-28 - Full 32-account production batch
 
-- Commit: Gate 7 activation changeset (see Git history)
-- Deployment: Pending for the classifier safeguard; the existing production
+- Commit: `3a3fdb0`
+- Deployment: Vercel production deployment succeeded. The existing production
   webhook and reconciliation routes handled the run successfully.
 - Turnout run: `cms4rwrln00003dnwfb842im1`
 - Provider run: `FVodvYXhn0kfk8CGJ`
