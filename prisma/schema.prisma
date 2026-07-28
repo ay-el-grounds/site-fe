@@ -106,7 +106,8 @@ model MonitorRun {
   createdAt             DateTime          @default(now())
   updatedAt             DateTime          @updatedAt
 
-  accounts MonitorRunAccount[]
+  accounts            MonitorRunAccount[] @relation("MonitorRunAccounts")
+  fallbackForAccounts MonitorRunAccount[] @relation("FallbackMonitorRun")
 
   @@index([status, createdAt])
   @@index([externalDatasetId])
@@ -127,17 +128,20 @@ model MonitorRunAccount {
   postsRetrieved    Int                     @default(0)
   needsFallback     Boolean                 @default(false)
   fallbackReason    String?
+  fallbackRunId     String?
   errorCode         String?
   errorMessage      String?
   startedAt         DateTime                @default(now())
   completedAt       DateTime?
 
-  run     MonitorRun     @relation(fields: [runId], references: [id], onDelete: Cascade)
-  account WatchedAccount @relation(fields: [accountId], references: [id], onDelete: Restrict)
+  run         MonitorRun     @relation("MonitorRunAccounts", fields: [runId], references: [id], onDelete: Cascade)
+  fallbackRun MonitorRun?    @relation("FallbackMonitorRun", fields: [fallbackRunId], references: [id], onDelete: SetNull)
+  account     WatchedAccount @relation(fields: [accountId], references: [id], onDelete: Restrict)
 
   @@unique([runId, accountId])
   @@index([runId, status])
   @@index([accountId, startedAt])
+  @@index([fallbackRunId])
   @@map("monitor_run_accounts")
 }
 

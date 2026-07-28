@@ -1,0 +1,36 @@
+[
+  {
+    "inputUrl": "https://www.instagram.com/turnout_fixture/",
+    "id": "20001",
+    "shortCode": "FallbackPostA",
+    "url": "https://www.instagram.com/p/FallbackPostA/",
+    "caption": "A normal fallback post.",
+    "timestamp": "2026-07-23T12:00:00.000Z",
+    "ownerUsername": "turnout_fixture",
+    "displayUrl": "https://example.com/fallback-a.jpg",
+    "images": [],
+    "childPosts": [],
+    "type": "Image",
+    "productType": "feed"
+  },
+  {
+    "inputUrl": "https://www.instagram.com/turnout_fixture/",
+    "id": "20002",
+    "shortCode": "CollaborativeFallback",
+    "url": "https://www.instagram.com/p/CollaborativeFallback/",
+    "caption": "A collaborative post retrieved for the watched account.",
+    "timestamp": "2026-07-23T13:00:00.000Z",
+    "ownerUsername": "fixture_collaborator",
+    "displayUrl": "https://example.com/fallback-collab.jpg",
+    "images": [],
+    "childPosts": [],
+    "type": "Sidecar",
+    "productType": "carousel_container"
+  },
+  {
+    "inputUrl": "https://www.instagram.com/turnout_fixture_empty/",
+    "url": "https://www.instagram.com/turnout_fixture_empty/",
+    "error": "no_items",
+    "errorDescription": "Empty or private data for provided input"
+  }
+]

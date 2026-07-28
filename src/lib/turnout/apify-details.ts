@@ -80,7 +80,7 @@ export interface NormalizeDetailsOptions {
 
 const StringIdSchema = z.union([z.string(), z.number()]).transform(String);
 
-const ApifyPostSchema = z
+export const ApifyPostSchema = z
   .object({
     id: StringIdSchema,
     shortCode: z.string().min(1),
@@ -216,7 +216,7 @@ export function normalizeApifyDetailsItem(
         continue;
       }
 
-      posts.push(normalizePost(parsedPost.data, profile.username));
+      posts.push(normalizeApifyPost(parsedPost.data, profile.username));
     }
 
     if (
@@ -257,9 +257,10 @@ export function normalizeApifyDetailsItem(
   };
 }
 
-function normalizePost(
+export function normalizeApifyPost(
   post: z.infer<typeof ApifyPostSchema>,
-  accountHandle: string
+  accountHandle: string,
+  providerSchemaVersion = APIFY_DETAILS_PARSER_VERSION
 ): NormalizedInstagramPost {
   return {
     providerPostId: post.id,
@@ -278,7 +279,7 @@ function normalizePost(
       childPosts: post.childPosts ?? [],
       isPinned: post.isPinned ?? false,
     },
-    providerSchemaVersion: APIFY_DETAILS_PARSER_VERSION,
+    providerSchemaVersion,
   };
 }
 

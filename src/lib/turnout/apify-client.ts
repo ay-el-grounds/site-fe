@@ -24,6 +24,14 @@ export interface ApifyProvider {
   getDatasetItems(datasetId: string): Promise<unknown[]>;
 }
 
+export interface ApifyReconciliationProvider extends ApifyProvider {
+  startPostsRun(
+    profileUrls: string[],
+    onlyPostsNewerThan: Date,
+    webhook?: ApifyWebhookConfig
+  ): Promise<ApifyRun>;
+}
+
 export interface ApifyWebhookConfig {
   requestUrl: string;
   secret: string;
@@ -73,6 +81,35 @@ export class ApifyClient implements ApifyProvider {
           resultsLimit: 1,
           addProfileStatistics: true,
           searchType: "hashtag",
+          addParentData: false,
+        }),
+      }
+    );
+    return ApifyRunResponseSchema.parse(response).data;
+  }
+
+  async startPostsRun(
+    profileUrls: string[],
+    onlyPostsNewerThan: Date,
+    webhook?: ApifyWebhookConfig
+  ): Promise<ApifyRun> {
+    const query = new URLSearchParams({
+      maxTotalChargeUsd: "0.25",
+    });
+    if (webhook) {
+      query.set("webhooks", encodeWebhookConfig(webhook));
+    }
+
+    const response = await this.request(
+      `/actors/apify~instagram-scraper/runs?${query.toString()}`,
+      {
+        method: "POST",
+        body: JSON.stringify({
+          resultsType: "posts",
+          directUrls: profileUrls,
+          resultsLimit: 12,
+          onlyPostsNewerThan: onlyPostsNewerThan.toISOString(),
+          skipPinnedPosts: true,
           addParentData: false,
         }),
       }

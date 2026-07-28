@@ -174,15 +174,15 @@ Remote pilot:
 - Apify run: `Lye8lO4Vbo03NLxcv`
 - Dataset: `sp8LOGokD0wwuIeDD`
 
-## Next Gate: Reconciliation
+## Gate 5: Reconciliation
 
-Status: Proposed
+Status: Implemented and verified locally; deployment is intentionally dormant
 
 Reconciliation should be implemented as a reusable service first, then exposed
 through a manually invoked admin route. It should not be registered in
 `vercel.json` during its first deployment.
 
-Proposed files:
+Implemented files:
 
 ```text
 src/lib/turnout/reconcile.ts
@@ -193,7 +193,7 @@ src/lib/turnout/reconcile.integration.test.ts
 
 ### Manual Endpoint
 
-Proposed route:
+Route:
 
 ```text
 POST /api/admin/turnout/reconcile
@@ -204,6 +204,7 @@ Proposed response:
 
 ```json
 {
+  "accepted": true,
   "recoveredRuns": 0,
   "fallbacksStarted": 0,
   "fallbacksIngested": 0,
@@ -276,22 +277,18 @@ Fallback Actor input:
 }
 ```
 
-Before implementation, add explicit fallback linkage. The current schema stores
-one provider run ID per `MonitorRun`, so it cannot safely explain which
-secondary Actor run resolved a primary account outcome.
-
-Preferred minimal schema addition:
+The implemented fallback linkage is:
 
 ```text
 MonitorRunAccount.fallbackRunId String?
 ```
 
-`fallbackRunId` should reference a separate `MonitorRun` whose account outcomes
+`fallbackRunId` references a separate `MonitorRun` whose account outcomes
 use `POSTS_FALLBACK`. This preserves one external provider run per
 `MonitorRun`, supports batching several fallback accounts, and makes replay and
 cost attribution explainable.
 
-The fallback parser must have fixtures for:
+The fallback parser has fixture and integration coverage for:
 
 - A normal post result.
 - Collaborative ownership.
@@ -299,6 +296,8 @@ The fallback parser must have fixtures for:
 - A missing/private/not-found account.
 - A partial multi-account batch.
 - Duplicate post metadata refresh.
+- Missing account results, which remain failures rather than being mistaken for
+  valid empty accounts.
 
 ### Classification Draining
 
@@ -319,10 +318,19 @@ The reconciliation service should:
 - Leave unprocessed work durable for the next invocation.
 - Mark exhausted retryable work `PERMANENT_ERROR`.
 
+Implemented bounds:
+
+- 48-second service budget within the 60-second Hobby function limit.
+- 12-second reserve before starting another classification batch.
+- Three posts per lease batch.
+- Twelve post claims maximum per invocation.
+- Five missed callbacks or completed fallbacks maximum per invocation.
+- Thirty-two accounts maximum per batched fallback run.
+
 The deployed project currently uses a 60-second function ceiling. Reconciliation
 should reserve time for persistence and return by approximately 50 seconds.
 
-The existing 67-post backlog should be drained with repeated manual admin calls
+The existing production backlog should be drained with repeated manual admin calls
 before cron activation. Daily steady-state volume should be measured during the
 32-account test rather than assumed.
 
@@ -360,9 +368,9 @@ terminal and no retryable work remains. A stale run must never remain
 
 ## Remaining Activation Gates
 
-### Gate 5: Drain Pilot Work
+### Gate 6: Drain Pilot Work
 
-Status: Blocked on reconciliation
+Status: Ready after dormant deployment
 
 - Deploy reconciliation without a cron entry.
 - Invoke it manually until all pilot-window posts are terminal.
@@ -370,7 +378,7 @@ Status: Blocked on reconciliation
 - Confirm no expired leases or stale runs remain.
 - Review every created event for date and location quality.
 
-### Gate 6: Full 32-Account Manual Batch
+### Gate 7: Full 32-Account Manual Batch
 
 Status: Pending
 
@@ -383,7 +391,7 @@ Status: Pending
 - Replay provider callbacks.
 - Confirm no duplicate events or posts.
 
-### Gate 7: Cron Replacement
+### Gate 8: Cron Replacement
 
 Status: Pending
 
@@ -401,7 +409,7 @@ Final switch:
 5. Remove all cron calls to the legacy direct Instagram monitor.
 6. Keep the standalone legacy CLI available temporarily for rollback.
 
-Do not perform this switch until Gates 5 and 6 pass.
+Do not perform this switch until Gates 6 and 7 pass.
 
 ## Rollback
 
@@ -454,6 +462,29 @@ CRON_SECRET
   date.
 - Removed the incorrect event and reset the source post.
 - Recorded the production queue baseline in this document.
+
+### 2026-07-28
+
+- Added nullable `MonitorRunAccount.fallbackRunId` with an indexed
+  `ON DELETE SET NULL` relation to `MonitorRun`.
+- Applied migration `20260728031500_turnout_fallback_run_link` directly to
+  Neon and verified the schema is up to date.
+- Preserved 32 watched accounts, 2 production runs, 12 account outcomes, 72
+  Instagram posts, and 11 events through the migration.
+- Added `apify-posts-v1` parsing based on provider `inputUrl`, including
+  collaborative ownership, explicit `no_items`, malformed results, and partial
+  batch behavior.
+- Added batched posts fallback launch, authoritative fallback ingestion,
+  original-outcome resolution, and abandoned provider-start recovery.
+- Added missed webhook recovery, expired lease recovery, bounded repeated
+  classification, retry exhaustion, and run finalization.
+- Added protected `POST /api/admin/turnout/reconcile`.
+- Passed all 28 Turnout tests against Neon with fake Apify and classifier
+  providers.
+- Passed TypeScript and the Next.js production build.
+- Left `vercel.json` and the legacy daily cron unchanged.
+- Stopped before invoking reconciliation against the live backlog, starting a
+  full 32-account run, or replacing the cron.
 
 ## Log Template
 

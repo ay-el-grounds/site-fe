@@ -10,6 +10,10 @@ import {
   normalizeApifyDetailsItem,
   type NormalizedAccountOutcome,
 } from "./apify-details";
+import {
+  APIFY_POSTS_PARSER_VERSION,
+  normalizeApifyPostsDataset,
+} from "./apify-posts";
 import type { ApifyProvider, ApifyRun } from "./apify-client";
 
 const SUCCESSFUL_ACCOUNT_STATUSES = new Set<MonitorRunAccountStatus>([
@@ -72,6 +76,9 @@ export async function ingestApifyRun(
   if (!storedRun?.externalRunId) {
     throw new UnknownMonitorRunError(options.callbackRunId);
   }
+  const isPostsFallback = storedRun.accounts.every(
+    (requested) => requested.retrievalSource === "POSTS_FALLBACK"
+  );
 
   // The callback identifies our record. All provider storage identifiers come
   // from the authoritative run fetched using the ID already stored in Neon.
@@ -107,12 +114,20 @@ export async function ingestApifyRun(
   let normalizedByHandle = new Map<string, NormalizedAccountOutcome>();
   if (!validationError) {
     try {
-      normalizedByHandle = normalizeDataset(
-        datasetItems,
-        storedRun.accounts,
-        storedRun.retrievalWindowStart,
-        now
-      );
+      normalizedByHandle = isPostsFallback
+        ? normalizeApifyPostsDataset(
+            datasetItems,
+            storedRun.accounts.map((requested) => ({
+              handle: requested.account.handle,
+              inputUrl: requested.providerInputUrl,
+            }))
+          )
+        : normalizeDetailsDataset(
+            datasetItems,
+            storedRun.accounts,
+            storedRun.retrievalWindowStart,
+            now
+          );
     } catch (error) {
       validationError = toError(error);
     }
@@ -150,6 +165,9 @@ export async function ingestApifyRun(
       };
     }
 
+    const providerSchemaVersion = isPostsFallback
+      ? APIFY_POSTS_PARSER_VERSION
+      : APIFY_DETAILS_PARSER_VERSION;
     await tx.monitorRun.update({
       where: { id: claimedRun.id },
       data: { status: "RETRIEVING" },
@@ -182,7 +200,14 @@ export async function ingestApifyRun(
     for (const requested of storedRun.accounts) {
       const handle = normalizeHandle(requested.account.handle);
       const outcome =
-        normalizedByHandle.get(handle) ?? missingAccountOutcome(requested.providerInputUrl, handle);
+        normalizedByHandle.get(handle) ??
+        missingAccountOutcome(
+          requested.providerInputUrl,
+          handle,
+          isPostsFallback
+            ? APIFY_POSTS_PARSER_VERSION
+            : APIFY_DETAILS_PARSER_VERSION
+        );
       outcomes.push(outcome);
 
       await tx.monitorRunAccount.upsert({
@@ -197,7 +222,7 @@ export async function ingestApifyRun(
           accountId: requested.accountId,
           providerInputUrl: requested.providerInputUrl,
           status: outcome.status,
-          providerAccountId: outcome.providerAccountId,
+          providerAccountId: outcome.providerAccountId ?? undefined,
           postsRetrieved: outcome.posts.length,
           needsFallback: outcome.status === "FALLBACK_REQUIRED",
           fallbackReason: outcome.fallbackReasons.join(",") || null,
@@ -269,13 +294,21 @@ export async function ingestApifyRun(
       data: {
         status,
         externalDatasetId: providerRun.defaultDatasetId!,
-        providerSchemaVersion: APIFY_DETAILS_PARSER_VERSION,
+        providerSchemaVersion,
         accountsRetrieved,
         postsRetrieved: ingestedPostIds.size,
         errorSummary,
         retrievedAt: now,
       },
     });
+    if (isPostsFallback) {
+      await resolvePrimaryFallbackOutcomes(
+        tx,
+        storedRun.id,
+        normalizedByHandle,
+        now
+      );
+    }
 
     await options.hooks?.beforeCommit?.();
 
@@ -290,7 +323,7 @@ export async function ingestApifyRun(
   });
 }
 
-function normalizeDataset(
+function normalizeDetailsDataset(
   items: unknown[],
   requestedAccounts: Array<{
     providerInputUrl: string;
@@ -329,6 +362,46 @@ function normalizeDataset(
   return normalized;
 }
 
+async function resolvePrimaryFallbackOutcomes(
+  tx: Prisma.TransactionClient,
+  fallbackRunId: string,
+  outcomes: Map<string, NormalizedAccountOutcome>,
+  now: Date
+): Promise<void> {
+  const primaryOutcomes = await tx.monitorRunAccount.findMany({
+    where: { fallbackRunId },
+    include: { account: { select: { handle: true } } },
+  });
+
+  for (const primary of primaryOutcomes) {
+    const fallback = outcomes.get(normalizeHandle(primary.account.handle));
+    if (!fallback) continue;
+    const successful = SUCCESSFUL_ACCOUNT_STATUSES.has(fallback.status);
+
+    await tx.monitorRunAccount.update({
+      where: { id: primary.id },
+      data: successful
+        ? {
+            status:
+              primary.postsRetrieved + fallback.posts.length > 0
+                ? "RETRIEVED"
+                : "EMPTY",
+            postsRetrieved: primary.postsRetrieved + fallback.posts.length,
+            needsFallback: false,
+            errorCode: null,
+            errorMessage: null,
+            completedAt: now,
+          }
+        : {
+            status: fallback.status,
+            errorCode: fallback.errorCode,
+            errorMessage: fallback.errorMessage,
+            completedAt: now,
+          },
+    });
+  }
+}
+
 function extractRawHandle(raw: unknown): string {
   if (!raw || typeof raw !== "object") {
     throw new Error("Dataset item is not an object");
@@ -351,7 +424,8 @@ function extractRawHandle(raw: unknown): string {
 
 function missingAccountOutcome(
   inputUrl: string,
-  handle: string
+  handle: string,
+  providerSchemaVersion = APIFY_DETAILS_PARSER_VERSION
 ): NormalizedAccountOutcome {
   return {
     status: "FAILED",
@@ -362,7 +436,7 @@ function missingAccountOutcome(
     fallbackReasons: [],
     errorCode: "missing_account_result",
     errorMessage: "Apify dataset did not contain an outcome for this account",
-    providerSchemaVersion: APIFY_DETAILS_PARSER_VERSION,
+    providerSchemaVersion,
   };
 }
 
@@ -421,6 +495,7 @@ async function markRunAndAccountsFailed(
       providerSchemaVersion: APIFY_DETAILS_PARSER_VERSION,
       errorSummary: error.message,
       retrievedAt: now,
+      completedAt: now,
     },
   });
   await tx.watchedAccount.updateMany({
