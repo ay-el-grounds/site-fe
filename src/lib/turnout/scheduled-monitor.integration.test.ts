@@ -98,10 +98,44 @@ integrationTest("a failed provider submission can be retried the same day", asyn
   assert.equal(retryProvider.detailsStarts(), 1);
 });
 
-async function createAccount(): Promise<string> {
+integrationTest("previously attempted failures do not force a historical batch", async () => {
+  const now = new Date("2035-04-20T08:00:00.000Z");
+  const previousRetrieval = new Date("2035-04-19T08:00:00.000Z");
+  const successfulHandle = await createAccount({
+    lastAttemptedAt: previousRetrieval,
+    lastRetrievedAt: previousRetrieval,
+  });
+  const failedHandle = await createAccount({
+    lastAttemptedAt: previousRetrieval,
+    lastRetrievedAt: null,
+  });
+
+  const started = await startScheduledMonitorRun({
+    prisma,
+    provider: fakeProvider(),
+    handles: [successfulHandle, failedHandle],
+    webhook,
+    now,
+  });
+  createdRunIds.add(started.runId);
+
+  assert.equal(started.disposition, "started");
+  assert.equal(
+    started.retrievalWindowStart.toISOString(),
+    "2035-04-17T08:00:00.000Z"
+  );
+  assert.equal(started.retrievalWindowEnd.toISOString(), now.toISOString());
+});
+
+async function createAccount(
+  data: {
+    lastAttemptedAt?: Date | null;
+    lastRetrievedAt?: Date | null;
+  } = {}
+): Promise<string> {
   const handle = `turnout_test_scheduled_${randomUUID().replaceAll("-", "")}`;
   const account = await prisma.watchedAccount.create({
-    data: { handle, displayName: "Turnout scheduled test" },
+    data: { handle, displayName: "Turnout scheduled test", ...data },
   });
   createdAccountIds.add(account.id);
   return handle;

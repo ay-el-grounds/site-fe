@@ -142,8 +142,11 @@ async function createMonitorRunRecord(
   const successfulRetrievals = accounts
     .map((account) => account.lastRetrievedAt)
     .filter((value): value is Date => value !== null);
+  const hasNeverAttemptedAccount = accounts.some(
+    (account) => account.lastAttemptedAt === null
+  );
   const lastCompletedRetrievalAt =
-    successfulRetrievals.length === accounts.length
+    !hasNeverAttemptedAccount && successfulRetrievals.length > 0
       ? new Date(
           Math.min(...successfulRetrievals.map((value) => value.getTime()))
         )
