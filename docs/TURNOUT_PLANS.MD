@@ -1,35 +1,36 @@
 # Turnout Provider Workflow Plan
 
-Last updated: 2026-07-24
+Last updated: 2026-07-28
 
 ## Status
 
-Turnout's Apify retrieval and webhook ingestion path is live and proven. It
-must not replace the legacy daily monitor until reconciliation can recover and
-drain all durable work.
+Turnout's complete Apify retrieval, webhook ingestion, reconciliation, and
+scheduled trigger path is live and proven.
 
 Current operating rule:
 
 - Keep the deployed Apify webhook enabled.
-- Keep the legacy `/api/cron/monitor` job enabled.
-- Do not add an Apify schedule to `vercel.json` yet.
-- Do not disable the legacy monitor until every activation gate in this file
-  is complete.
+- Vercel calls `/api/cron/monitor` once daily at 08:00 UTC.
+- The cron route runs bounded reconciliation before submitting one idempotent
+  Apify details batch.
+- Keep the standalone legacy CLI available temporarily for rollback; Vercel
+  Cron no longer calls the legacy monitor.
 
 ## Current Production Snapshot
 
-Captured from Neon at `2026-07-24T02:16:22.232Z`:
+Captured from Neon after Gate 8 activation on `2026-07-28`:
 
 | Item | Count |
 | --- | ---: |
 | Active watched accounts | 32 |
-| Durable Instagram posts | 72 |
-| Pending classifications | 67 |
-| Non-event classifications | 5 |
-| Event-created classifications | 0 |
-| Runs in `PROCESSING` | 1 |
-| Runs in `PARTIAL` | 1 |
-| Historical account outcomes requiring fallback | 2 |
+| Durable Instagram posts | 331 |
+| Pending classifications outside active run windows | 131 |
+| Non-event classifications | 190 |
+| Event-created classifications | 10 |
+| Approved events | 21 |
+| Active monitor runs | 0 |
+| Account outcomes requiring fallback | 0 |
+| Expired processing leases | 0 |
 
 The pending count includes posts retained for durable processing, including
 posts outside a run's current retrieval window. Reconciliation must select work
@@ -93,8 +94,8 @@ Daily/manual reconciliation
    resetting terminal classification.
 8. Collaborative posts remain owned by the requested watched account.
 9. Classification work is leased, bounded, retryable, and reclaimable.
-10. The legacy cron remains the production fallback until the new workflow is
-    proven across all 32 accounts.
+10. Vercel Cron invokes the durable Turnout workflow; the legacy monitor is
+    available only through the standalone CLI for temporary rollback.
 
 ## Completed Work
 
@@ -398,29 +399,30 @@ Status: Complete
 
 ### Gate 8: Cron Replacement
 
-Status: Pending
+Status: Complete
 
 The Hobby plan permits cron schedules no more frequently than once per day and
 does not guarantee precise execution within the selected hour. The final daily
 entry must preserve the three-day overlap.
 
-Final switch:
+Implemented switch:
 
-1. Replace the legacy implementation behind `/api/cron/monitor`, or point
-   `vercel.json` to a new Turnout trigger route.
-2. The daily trigger first runs bounded reconciliation.
-3. It starts a new details batch only when no equivalent daily run exists.
-4. It returns without waiting for Apify.
-5. Remove all cron calls to the legacy direct Instagram monitor.
-6. Keep the standalone legacy CLI available temporarily for rollback.
-
-Do not perform this switch until Gates 6 and 7 pass.
+1. Replaced the legacy implementation behind `/api/cron/monitor`.
+2. The daily trigger runs reconciliation with a 25-second budget.
+3. A Postgres advisory lock and UTC-day guard allow only one non-failed
+   scheduled details run per day.
+4. The route submits Apify and returns without waiting for retrieval.
+5. The three-day steady-state overlap expands after missed successful runs.
+6. Previously attempted provider failures no longer force healthy accounts
+   into repeated 30-day historical fallbacks.
+7. The standalone legacy CLI remains available temporarily for rollback.
 
 ## Rollback
 
 If the new daily workflow misbehaves:
 
-1. Restore the legacy cron route in `vercel.json`.
+1. Restore the legacy implementation in `/api/cron/monitor`; the
+   `vercel.json` path and schedule do not need to change.
 2. Stop starting new Apify runs.
 3. Leave webhook ingestion enabled so already-running provider work is not
    lost.
@@ -560,6 +562,43 @@ CRON_SECRET
   leases, zero test accounts, and zero event duplicates.
 - Preserved 119 older pending posts outside the Gate 7 retrieval window.
 - Gate 7 is complete. The legacy daily cron remains unchanged pending Gate 8.
+
+### 2026-07-28 - Cron replacement and production activation
+
+- Commits: `121c982`, `8bcab15`, `c5857cf`
+- Deployment: All three Vercel production deployments succeeded.
+- Schedule: `/api/cron/monitor` at `0 8 * * *`.
+- Replaced the cron route's blocking legacy `runMonitor()` call with bounded
+  reconciliation followed by asynchronous Apify details submission.
+- Added fail-closed cron authorization and required webhook configuration.
+- Added an advisory-locked UTC-day idempotency claim. Two serial production
+  smoke requests returned `started` and `already_started` with the same Turnout
+  and provider run IDs.
+- Turnout run: `cms4tllpk0006kk5bh5bqee5i`
+- Provider run / dataset: `B3HTBUprW5PhqiSCT` /
+  `74N7Z82BpRuQZprZJ`
+- The details run persisted 32/32 account outcomes, 276 retrieved rows, and
+  cost $0.0864.
+- The smoke exposed that persistently not-found accounts could keep the shared
+  window at 30 days. The cursor policy now reserves historical backfill for
+  genuinely unattempted accounts while retaining a three-day steady-state
+  overlap for previously attempted batches.
+- The pre-fix smoke required one final nine-account fallback:
+  `cms4tqw5i00037f2a51yp8vvi` / `lC98E1QouDaxfzxdk` /
+  `PRCxToSCRQr45Fqgx`.
+- The fallback returned 92 rows, cost $0.2484, and resolved every fallback
+  requirement. Total activation cost was $0.3348.
+- The activation created 38 net-new durable posts and no events.
+- Repeated reconciliation exposed and fixed mutable `completedAt` timestamps
+  on already-terminal partial runs. A deployed no-op reconciliation reported
+  zero work and left both `completedAt` and `updatedAt` unchanged.
+- Passed all 39 Turnout tests against Neon and passed the Next.js production
+  build.
+- Final state: 32 active accounts, seven durable runs, 331 posts, 21 events,
+  zero active runs, zero unresolved fallbacks, zero expired leases, zero test
+  accounts, and zero event duplicates.
+- Gate 8 is complete. Vercel Cron now runs the durable Turnout workflow; the
+  legacy monitor remains available only as a temporary standalone rollback.
 
 ## Log Template
 
