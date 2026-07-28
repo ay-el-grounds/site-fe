@@ -370,13 +370,16 @@ terminal and no retryable work remains. A stale run must never remain
 
 ### Gate 6: Drain Pilot Work
 
-Status: Ready after dormant deployment
+Status: Complete
 
-- Deploy reconciliation without a cron entry.
-- Invoke it manually until all pilot-window posts are terminal.
-- Resolve both historical fallback outcomes.
-- Confirm no expired leases or stale runs remain.
-- Review every created event for date and location quality.
+- Deployed reconciliation without a cron entry.
+- Invoked it serially until all pilot-window posts were terminal.
+- Resolved both historical fallback outcomes through one two-account posts run.
+- Confirmed no expired leases or stale runs remain.
+- Reviewed and corrected every created event for date, time, location, and
+  duplication quality.
+- Preserved 23 older posts outside the completed run windows as durable pending
+  history; they are not eligible backlog for these pilot runs.
 
 ### Gate 7: Full 32-Account Manual Batch
 
@@ -487,6 +490,32 @@ CRON_SECRET
 - Left `vercel.json` and the legacy daily cron unchanged.
 - Stopped before invoking reconciliation against the live backlog, starting a
   full 32-account run, or replacing the cron.
+
+### 2026-07-28 - Pilot reconciliation drain
+
+- Captured a baseline of 67 pending posts, five terminal non-events, two stale
+  pilot runs, two unresolved fallbacks, and 11 existing events.
+- Ran five serial production reconciliation calls. Four calls claimed and
+  processed 48 posts; the fifth confirmed zero eligible work.
+- The fallback webhook processed three additional posts.
+- Started and ingested one Apify posts fallback for `limerockpark` and
+  `wekfest_usa`: two account outcomes, 24 retrieved posts, and seven net-new
+  durable posts after upsert deduplication.
+- Finalized all three monitor runs as `COMPLETED`, with zero unresolved
+  fallbacks, expired leases, or active processing work.
+- GPT created ten event rows. Review retained seven valid events, merged three
+  duplicate rows, and preserved the duplicate source posts as terminal
+  non-events.
+- Corrected the Sunday Motoring Meet from July 26 to August 23 and restored the
+  Open House caption's 10:30 AM start.
+- Normalized all seven retained event timestamps from Eastern wall time to UTC
+  for correct frontend and calendar display.
+- Added deterministic explicit-date precedence, `America/New_York` parsing for
+  offset-free event times, and title normalization for duplicate variants such
+  as NYC/New York.
+- Bumped the classifier audit version to `turnout-gpt4o-mini-v2`.
+- Passed all 32 Turnout tests against Neon and the Next.js production build.
+- Left the full 32-account run and legacy cron unchanged for Gate 7.
 
 ## Log Template
 

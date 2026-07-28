@@ -7,11 +7,12 @@ import {
 
 import {
   extractEventFromPost,
+  parseTurnoutDateTime,
   type ExtractedEvent,
   type RawPost,
 } from "@/lib/instagram-monitor";
 
-const CLASSIFIER_VERSION = "turnout-gpt4o-mini-v1";
+const CLASSIFIER_VERSION = "turnout-gpt4o-mini-v2";
 const DEFAULT_BATCH_SIZE = 3;
 const MAX_ATTEMPTS = 3;
 const LEASE_MINUTES = 10;
@@ -187,7 +188,7 @@ async function persistClassification(
       return { processed: 1, eventsCreated: 0 };
     }
 
-    const eventDate = new Date(extracted.date);
+    const eventDate = parseTurnoutDateTime(extracted.date);
     const sevenDaysAgo = new Date(now.getTime() - 7 * DAY_MS);
     if (Number.isNaN(eventDate.getTime()) || eventDate < sevenDaysAgo) {
       await completePost(tx, post.id, leaseId, "NON_EVENT", extracted, null);
@@ -203,16 +204,20 @@ async function persistClassification(
       where: { instagramPostUrl: post.canonicalUrl },
       select: { id: true },
     });
+    const sameDayCandidates = await tx.event.findMany({
+      where: {
+        sourceAccount: post.handle,
+        date: { gte: dayStart, lt: dayEnd },
+      },
+      select: { id: true, title: true, city: true },
+    });
     const duplicate =
       existingBySource ??
-      (await tx.event.findFirst({
-        where: {
-          title: extracted.title,
-          city: extracted.city,
-          date: { gte: dayStart, lt: dayEnd },
-        },
-        select: { id: true },
-      }));
+      sameDayCandidates.find(
+        (candidate) =>
+          normalizePlace(candidate.city) === normalizePlace(extracted.city) &&
+          titlesLikelyMatch(candidate.title, extracted.title)
+      );
 
     if (duplicate) {
       await completePost(tx, post.id, leaseId, "NON_EVENT", extracted, null);
@@ -225,7 +230,9 @@ async function persistClassification(
         title: extracted.title,
         description: extracted.description,
         date: eventDate,
-        endTime: extracted.endTime ? new Date(extracted.endTime) : null,
+        endTime: extracted.endTime
+          ? parseTurnoutDateTime(extracted.endTime)
+          : null,
         venue: extracted.venue,
         address: extracted.address,
         city: extracted.city,
@@ -252,6 +259,32 @@ async function persistClassification(
     await recordProcessedPost(tx, runId, post.accountId, true, now);
     return { processed: 1, eventsCreated: 1 };
   });
+}
+
+function normalizePlace(value: string): string {
+  return value
+    .normalize("NFKD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/\bnyc\b|\bnew york city\b/g, "new york")
+    .replace(/[^a-z0-9]+/g, " ")
+    .trim();
+}
+
+export function titlesLikelyMatch(left: string, right: string): boolean {
+  const normalizedLeft = normalizePlace(left);
+  const normalizedRight = normalizePlace(right);
+  if (normalizedLeft === normalizedRight) return true;
+
+  const shorter =
+    normalizedLeft.length <= normalizedRight.length
+      ? normalizedLeft
+      : normalizedRight;
+  const longer =
+    normalizedLeft.length > normalizedRight.length
+      ? normalizedLeft
+      : normalizedRight;
+  return shorter.length >= 12 && longer.includes(shorter);
 }
 
 async function completePost(

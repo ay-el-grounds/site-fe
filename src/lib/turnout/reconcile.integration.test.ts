@@ -17,8 +17,8 @@ config({ path: ".env.local" });
 const integrationTest =
   process.env.TURNOUT_DATABASE_INTEGRATION === "1" ? test : test.skip;
 const prisma = new PrismaClient();
-const NOW = new Date("2026-07-28T04:00:00.000Z");
-const WINDOW_START = new Date("2026-07-25T04:00:00.000Z");
+const NOW = new Date("2026-07-29T04:00:00.000Z");
+const WINDOW_START = new Date("2026-07-26T04:00:00.000Z");
 const WEBHOOK: ApifyWebhookConfig = {
   requestUrl: "https://example.com/api/webhooks/apify",
   secret: "test-secret",

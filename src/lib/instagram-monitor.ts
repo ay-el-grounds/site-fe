@@ -441,6 +441,15 @@ export function resolveRelativeWeekdayDate(
     return extractedDate;
   }
 
+  const explicitDate = findExplicitWeekdayDate(
+    caption,
+    targetWeekday,
+    postDate
+  );
+  if (explicitDate) {
+    return `${explicitDate}${extractedDate.slice(10)}`;
+  }
+
   const expectedDate = new Date(postDate);
   const daysAhead = (targetWeekday - postDate.getUTCDay() + 7) % 7;
   expectedDate.setUTCDate(expectedDate.getUTCDate() + daysAhead);
@@ -453,6 +462,120 @@ export function resolveRelativeWeekdayDate(
     `[instagram-monitor] Corrected relative weekday date from ${extractedDay} to ${expectedDay}`
   );
   return `${expectedDay}${extractedDate.slice(10)}`;
+}
+
+export function parseTurnoutDateTime(value: string): Date {
+  if (/(?:Z|[+-]\d{2}:?\d{2})$/i.test(value)) {
+    return new Date(value);
+  }
+
+  const match = value.match(
+    /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})(?::(\d{2})(?:\.(\d{1,3}))?)?$/
+  );
+  if (!match) return new Date(value);
+
+  const [, year, month, day, hour, minute, second = "0", milliseconds = "0"] =
+    match;
+  const localAsUtc = Date.UTC(
+    Number(year),
+    Number(month) - 1,
+    Number(day),
+    Number(hour),
+    Number(minute),
+    Number(second),
+    Number(milliseconds.padEnd(3, "0"))
+  );
+  let offset = getNewYorkOffsetMs(new Date(localAsUtc));
+  let result = localAsUtc - offset;
+  const resolvedOffset = getNewYorkOffsetMs(new Date(result));
+  if (resolvedOffset !== offset) {
+    offset = resolvedOffset;
+    result = localAsUtc - offset;
+  }
+  return new Date(result);
+}
+
+function findExplicitWeekdayDate(
+  caption: string,
+  targetWeekday: number,
+  postDate: Date
+): string | null {
+  const months = [
+    "january",
+    "february",
+    "march",
+    "april",
+    "may",
+    "june",
+    "july",
+    "august",
+    "september",
+    "october",
+    "november",
+    "december",
+  ];
+  const pattern = new RegExp(
+    `\\b(${months.join("|")})\\s+(\\d{1,2})(?:st|nd|rd|th)?(?:,?\\s+(\\d{4}))?\\b`,
+    "gi"
+  );
+
+  for (const match of caption.matchAll(pattern)) {
+    const month = months.indexOf(match[1].toLowerCase());
+    const day = Number(match[2]);
+    let year = match[3] ? Number(match[3]) : postDate.getUTCFullYear();
+    let candidate = new Date(Date.UTC(year, month, day));
+    if (
+      !match[3] &&
+      candidate <
+        new Date(
+          Date.UTC(
+            postDate.getUTCFullYear(),
+            postDate.getUTCMonth(),
+            postDate.getUTCDate()
+          )
+        )
+    ) {
+      year += 1;
+      candidate = new Date(Date.UTC(year, month, day));
+    }
+    if (
+      candidate.getUTCMonth() === month &&
+      candidate.getUTCDate() === day &&
+      candidate.getUTCDay() === targetWeekday
+    ) {
+      return candidate.toISOString().slice(0, 10);
+    }
+  }
+  return null;
+}
+
+const newYorkDateTimeFormatter = new Intl.DateTimeFormat("en-US", {
+  timeZone: "America/New_York",
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+  hour: "2-digit",
+  minute: "2-digit",
+  second: "2-digit",
+  hourCycle: "h23",
+});
+
+function getNewYorkOffsetMs(date: Date): number {
+  const parts = Object.fromEntries(
+    newYorkDateTimeFormatter
+      .formatToParts(date)
+      .filter((part) => part.type !== "literal")
+      .map((part) => [part.type, Number(part.value)])
+  );
+  const localAsUtc = Date.UTC(
+    parts.year,
+    parts.month - 1,
+    parts.day,
+    parts.hour,
+    parts.minute,
+    parts.second
+  );
+  return localAsUtc - Math.floor(date.getTime() / 1000) * 1000;
 }
 
 /**
@@ -516,7 +639,7 @@ export async function runMonitor(): Promise<MonitorSummary> {
             logData.eventsFound++;
             summary.eventsFound++;
 
-            const eventDate = new Date(event.date);
+            const eventDate = parseTurnoutDateTime(event.date);
             if (isNaN(eventDate.getTime())) {
               console.warn(
                 `  ⚠ Skipping "${event.title}" due to invalid date: ${event.date}`
@@ -564,7 +687,9 @@ export async function runMonitor(): Promise<MonitorSummary> {
                 title: event.title,
                 description: event.description,
                 date: eventDate,
-                endTime: event.endTime ? new Date(event.endTime) : null,
+                endTime: event.endTime
+                  ? parseTurnoutDateTime(event.endTime)
+                  : null,
                 venue: event.venue,
                 address: event.address,
                 city: event.city,
