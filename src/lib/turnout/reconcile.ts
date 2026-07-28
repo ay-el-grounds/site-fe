@@ -496,7 +496,7 @@ async function finalizeRuns(
       status = unresolvedFallback || hasAccountFailure ? "PARTIAL" : "PROCESSING";
     } else {
       status = hasAccountFailure ? "PARTIAL" : "COMPLETED";
-      completedAt = now;
+      completedAt = run.completedAt ?? now;
     }
 
     if (
@@ -507,7 +507,7 @@ async function finalizeRuns(
         where: { id: run.id },
         data: { status, completedAt },
       });
-      if (completedAt) finalized++;
+      if (completedAt && !run.completedAt) finalized++;
     }
   }
   return finalized;

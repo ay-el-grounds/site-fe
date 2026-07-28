@@ -67,6 +67,21 @@ integrationTest("recovers a missed callback and drains its post to completion", 
   assert.equal(summary.postsProcessed, 1);
   assert.equal(run.status, "COMPLETED");
   assert.ok(run.completedAt);
+
+  const repeated = await reconcileTurnout({
+    prisma,
+    provider,
+    webhook: WEBHOOK,
+    now: new Date(NOW.getTime() + 60_000),
+    runIds: [scenario.runId],
+    classifier: async () => null,
+  });
+  const stableRun = await prisma.monitorRun.findUniqueOrThrow({
+    where: { id: scenario.runId },
+  });
+
+  assert.equal(repeated.runsFinalized, 0);
+  assert.equal(stableRun.completedAt?.toISOString(), run.completedAt.toISOString());
 });
 
 integrationTest("launches, ingests, and exactly replays a posts fallback", async () => {
