@@ -32,12 +32,19 @@ export interface ApifyReconciliationProvider extends ApifyProvider {
   ): Promise<ApifyRun>;
 }
 
+export interface ApifyMonitorProvider extends ApifyReconciliationProvider {
+  startDetailsRun(
+    profileUrls: string[],
+    webhook?: ApifyWebhookConfig
+  ): Promise<ApifyRun>;
+}
+
 export interface ApifyWebhookConfig {
   requestUrl: string;
   secret: string;
 }
 
-export class ApifyClient implements ApifyProvider {
+export class ApifyClient implements ApifyMonitorProvider {
   constructor(
     private readonly token: string,
     private readonly baseUrl = APIFY_API_BASE_URL

@@ -1,24 +1,128 @@
 import { MonitorRunTrigger, PrismaClient } from "@prisma/client";
 
 import {
-  ApifyClient,
+  type ApifyMonitorProvider,
   type ApifyWebhookConfig,
 } from "./apify-client";
 import { computeRetrievalWindow } from "./apify-details";
 
 export interface StartMonitorRunOptions {
   prisma: PrismaClient;
-  provider: ApifyClient;
+  provider: ApifyMonitorProvider;
   handles?: string[];
   trigger?: MonitorRunTrigger;
   webhook?: ApifyWebhookConfig;
   now?: Date;
 }
 
-export async function startMonitorRun(options: StartMonitorRunOptions) {
+export interface StartedMonitorRunResult {
+  disposition: "started";
+  runId: string;
+  externalRunId: string;
+  handles: string[];
+  retrievalWindowStart: Date;
+  retrievalWindowEnd: Date;
+}
+
+export interface ExistingMonitorRunResult {
+  disposition: "already_started";
+  runId: string;
+  externalRunId: string | null;
+  handles: string[];
+  retrievalWindowStart: Date;
+  retrievalWindowEnd: Date;
+}
+
+export type MonitorRunStartResult =
+  | StartedMonitorRunResult
+  | ExistingMonitorRunResult;
+
+type MonitorRunStore = Pick<PrismaClient, "watchedAccount" | "monitorRun">;
+
+interface PreparedMonitorRun {
+  runId: string;
+  handles: string[];
+  profileUrls: string[];
+  retrievalWindowStart: Date;
+  retrievalWindowEnd: Date;
+}
+
+export async function startMonitorRun(
+  options: StartMonitorRunOptions
+): Promise<StartedMonitorRunResult> {
+  const prepared = await createMonitorRunRecord(options.prisma, options);
+  return launchMonitorRun(options, prepared);
+}
+
+export async function startScheduledMonitorRun(
+  options: Omit<StartMonitorRunOptions, "trigger">
+): Promise<MonitorRunStartResult> {
+  const now = options.now ?? new Date();
+  const dayStart = startOfUtcDay(now);
+  const dayEnd = new Date(dayStart.getTime() + 24 * 60 * 60 * 1000);
+
+  const claim = await options.prisma.$transaction(async (tx) => {
+    await tx.$queryRaw`
+      WITH scheduled_start_lock AS (
+        SELECT pg_advisory_xact_lock(
+          hashtextextended('turnout-scheduled-monitor-start', 0)
+        )
+      )
+      SELECT true AS acquired
+      FROM scheduled_start_lock
+    `;
+
+    const existing = await tx.monitorRun.findFirst({
+      where: {
+        trigger: "SCHEDULED",
+        status: { not: "FAILED" },
+        retrievalWindowEnd: { gte: dayStart, lt: dayEnd },
+      },
+      orderBy: { createdAt: "asc" },
+      include: {
+        accounts: {
+          include: { account: { select: { handle: true } } },
+          orderBy: { account: { handle: "asc" } },
+        },
+      },
+    });
+
+    if (existing) {
+      return {
+        existing: true as const,
+        result: {
+          disposition: "already_started" as const,
+          runId: existing.id,
+          externalRunId: existing.externalRunId,
+          handles: existing.accounts.map((item) => item.account.handle),
+          retrievalWindowStart: existing.retrievalWindowStart,
+          retrievalWindowEnd: existing.retrievalWindowEnd,
+        },
+      };
+    }
+
+    const prepared = await createMonitorRunRecord(tx, {
+      ...options,
+      trigger: "SCHEDULED",
+      now,
+    });
+    return { existing: false as const, prepared };
+  });
+
+  if (claim.existing) return claim.result;
+  return launchMonitorRun(
+    { ...options, trigger: "SCHEDULED", now },
+    claim.prepared
+  );
+}
+
+async function createMonitorRunRecord(
+  store: MonitorRunStore,
+  options: Omit<StartMonitorRunOptions, "prisma"> | StartMonitorRunOptions
+): Promise<PreparedMonitorRun> {
   const now = options.now ?? new Date();
   const normalizedHandles = options.handles?.map(normalizeHandle);
-  const accounts = await options.prisma.watchedAccount.findMany({
+  const accounts = await store.watchedAccount.findMany({
     where: {
       isActive: true,
       ...(normalizedHandles ? { handle: { in: normalizedHandles } } : {}),
@@ -49,7 +153,8 @@ export async function startMonitorRun(options: StartMonitorRunOptions) {
     lastCompletedRetrievalAt,
   });
 
-  const run = await options.prisma.monitorRun.create({
+  const profileUrls = accounts.map((account) => profileUrl(account.handle));
+  const run = await store.monitorRun.create({
     data: {
       trigger: options.trigger ?? "MANUAL",
       status: "PENDING",
@@ -68,13 +173,26 @@ export async function startMonitorRun(options: StartMonitorRunOptions) {
     },
   });
 
+  return {
+    runId: run.id,
+    handles: accounts.map((account) => account.handle),
+    profileUrls,
+    retrievalWindowStart: window.start,
+    retrievalWindowEnd: window.end,
+  };
+}
+
+async function launchMonitorRun(
+  options: StartMonitorRunOptions,
+  prepared: PreparedMonitorRun
+): Promise<StartedMonitorRunResult> {
   try {
     const providerRun = await options.provider.startDetailsRun(
-      accounts.map((account) => profileUrl(account.handle)),
+      prepared.profileUrls,
       options.webhook
     );
     await options.prisma.monitorRun.update({
-      where: { id: run.id },
+      where: { id: prepared.runId },
       data: {
         externalRunId: providerRun.id,
         status: "RETRIEVING",
@@ -82,19 +200,21 @@ export async function startMonitorRun(options: StartMonitorRunOptions) {
     });
 
     return {
-      runId: run.id,
+      disposition: "started",
+      runId: prepared.runId,
       externalRunId: providerRun.id,
-      handles: accounts.map((account) => account.handle),
-      retrievalWindowStart: window.start,
-      retrievalWindowEnd: window.end,
+      handles: prepared.handles,
+      retrievalWindowStart: prepared.retrievalWindowStart,
+      retrievalWindowEnd: prepared.retrievalWindowEnd,
     };
   } catch (error) {
     await options.prisma.monitorRun.update({
-      where: { id: run.id },
+      where: { id: prepared.runId },
       data: {
         status: "FAILED",
         errorSummary: error instanceof Error ? error.message : String(error),
-        retrievedAt: new Date(),
+        retrievedAt: options.now ?? new Date(),
+        completedAt: options.now ?? new Date(),
       },
     });
     throw error;
@@ -107,4 +227,10 @@ function normalizeHandle(handle: string): string {
 
 function profileUrl(handle: string): string {
   return `https://www.instagram.com/${handle}/`;
+}
+
+function startOfUtcDay(value: Date): Date {
+  return new Date(
+    Date.UTC(value.getUTCFullYear(), value.getUTCMonth(), value.getUTCDate())
+  );
 }

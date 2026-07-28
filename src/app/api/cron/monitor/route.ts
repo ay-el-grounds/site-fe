@@ -1,36 +1,46 @@
-/**
- * Vercel Cron Job endpoint — runs the Instagram monitor automatically.
- *
- * Vercel sends a GET request to this endpoint on schedule (see vercel.json).
- * It injects an Authorization header with the CRON_SECRET env var.
- *
- * Set up in vercel.json:
- * {
- *   "crons": [{ "path": "/api/cron/monitor", "schedule": "0 8 * * *" }]
- * }
- *
- * Required env var: CRON_SECRET (set in Vercel dashboard)
- */
-
 import { NextRequest, NextResponse } from "next/server";
-import { runMonitor } from "@/lib/instagram-monitor";
 
-// Hobby-compatible ceiling. Longer monitor runs should use the standalone script.
+import prisma from "@/lib/prisma";
+import { ApifyClient } from "@/lib/turnout/apify-client";
+import {
+  isAuthorizedCronRequest,
+  runScheduledTurnout,
+} from "@/lib/turnout/scheduled-monitor";
+
 export const maxDuration = 60;
 
 export async function GET(request: NextRequest) {
-  // Verify Vercel's injected authorization header
-  const authHeader = request.headers.get("authorization");
-  if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+  if (
+    !isAuthorizedCronRequest(
+      request.headers.get("authorization"),
+      process.env.CRON_SECRET
+    )
+  ) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  console.log("[cron] Starting scheduled Instagram monitor run...");
+  const webhookSecret = process.env.APIFY_WEBHOOK_SECRET;
+  if (!webhookSecret) {
+    return NextResponse.json(
+      { error: "APIFY_WEBHOOK_SECRET is not configured." },
+      { status: 500 }
+    );
+  }
 
   try {
-    const summary = await runMonitor();
+    const provider = new ApifyClient(process.env.APIFY_API_TOKEN ?? "");
+    const summary = await runScheduledTurnout({
+      prisma,
+      provider,
+      webhook: {
+        requestUrl:
+          process.env.TURNOUT_WEBHOOK_URL ??
+          new URL("/api/webhooks/apify", request.nextUrl.origin).toString(),
+        secret: webhookSecret,
+      },
+    });
 
-    console.log("[cron] Monitor run complete:", summary);
+    console.log("[Turnout cron] Scheduled workflow accepted:", summary);
 
     return NextResponse.json({
       success: true,
@@ -39,7 +49,7 @@ export async function GET(request: NextRequest) {
     });
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
-    console.error("[cron] Monitor run failed:", message);
+    console.error("[Turnout cron] Scheduled workflow failed:", message);
 
     return NextResponse.json(
       { success: false, error: message },
